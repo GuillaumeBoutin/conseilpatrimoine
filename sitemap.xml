@@ -37,7 +37,39 @@
     <priority>0.5</priority>
   </url>
   <url>
+    <loc>https://le-conseilpatrimoine.fr/guides/particuliers/assurance-vie-fonctionnement-fiscalite/</loc>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://le-conseilpatrimoine.fr/guides/particuliers/per-individuel-fonctionnement-fiscalite/</loc>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://le-conseilpatrimoine.fr/guides/particuliers/scpi-de-rendement/</loc>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://le-conseilpatrimoine.fr/guides/particuliers/scpi-demembree-nue-propriete-ou-usufruit/</loc>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://le-conseilpatrimoine.fr/guides/particuliers/clause-beneficiaire-demembree/</loc>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://le-conseilpatrimoine.fr/guides/particuliers/fonds-private-equity-qu-est-ce-que-c-est/</loc>
+    <priority>0.5</priority>
+  </url>
+  <url>
     <loc>https://le-conseilpatrimoine.fr/guides/dirigeants/remuneration-dirigeant-salaire-ou-dividendes/</loc>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://le-conseilpatrimoine.fr/guides/dirigeants/scpi-par-societe-a-l-is/</loc>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://le-conseilpatrimoine.fr/guides/dirigeants/contrat-de-capitalisation-societe-is/</loc>
     <priority>0.5</priority>
   </url>
   <url>
