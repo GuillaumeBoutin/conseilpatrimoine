@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://le-conseilpatrimoine.fr/</loc>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://le-conseilpatrimoine.fr/vos-objectifs/</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://le-conseilpatrimoine.fr/professionnels-dirigeants/</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://le-conseilpatrimoine.fr/cabinet/</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://le-conseilpatrimoine.fr/contact/</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://le-conseilpatrimoine.fr/mentions-legales/</loc>
+    <priority>0.2</priority>
+  </url>
+  <url>
+    <loc>https://le-conseilpatrimoine.fr/politique-de-confidentialite/</loc>
+    <priority>0.2</priority>
+  </url>
+</urlset>
