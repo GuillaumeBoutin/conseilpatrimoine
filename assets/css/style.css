@@ -236,6 +236,32 @@ img { max-width: 100%; display: block; }
   font-weight: 700;
 }
 
+/* ---------- Audience split ---------- */
+.audience-card {
+  display: block;
+  background: var(--white);
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  padding: 36px 32px;
+  text-align: left;
+  transition: 0.2s;
+}
+.audience-card:hover {
+  border-color: var(--gold);
+  box-shadow: 0 16px 40px rgba(3, 71, 95, 0.1);
+  text-decoration: none;
+}
+.audience-icon { font-size: 2.4rem; display: block; margin-bottom: 14px; }
+.audience-card h3 { margin-bottom: 10px; }
+.audience-card p { color: #45506a; }
+.audience-cta {
+  display: inline-block;
+  margin-top: 12px;
+  font-weight: 600;
+  color: var(--teal);
+  font-size: 0.95rem;
+}
+
 /* ---------- Team ---------- */
 .team-card {
   text-align: center;
@@ -415,6 +441,119 @@ form.contact-form .consent { font-size: 0.82rem; color: #5a6377; margin-bottom: 
   gap: 10px;
   font-size: 0.85rem;
 }
+
+/* ---------- Guides / Blog ---------- */
+.guide-filters {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 40px;
+}
+.guide-filters a {
+  padding: 10px 22px;
+  border-radius: 50px;
+  border: 2px solid var(--border);
+  color: var(--navy);
+  font-weight: 600;
+  font-size: 0.92rem;
+}
+.guide-filters a.active,
+.guide-filters a:hover {
+  border-color: var(--teal);
+  color: var(--teal);
+  text-decoration: none;
+}
+.guide-card {
+  display: block;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+.guide-card:hover { text-decoration: none; box-shadow: 0 16px 40px rgba(3, 71, 95, 0.1); }
+.guide-card .guide-tag {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--teal);
+  background: var(--cream);
+  padding: 4px 12px;
+  border-radius: 50px;
+  margin-bottom: 14px;
+}
+.guide-card .guide-body { padding: 26px; }
+.guide-card h3 { color: var(--navy); margin-bottom: 10px; font-family: var(--font-sans); font-size: 1.15rem; font-weight: 700; }
+.guide-card p { color: #45506a; font-size: 0.95rem; }
+.guide-card .guide-meta { font-size: 0.82rem; color: #8891a4; margin-top: 14px; }
+
+.article-hero {
+  background: var(--navy);
+  color: var(--white);
+  padding: 48px 0 40px;
+}
+.article-hero .breadcrumb { font-size: 0.85rem; color: #b7c0cf; margin-bottom: 14px; }
+.article-hero .breadcrumb a { color: #b7c0cf; }
+.article-hero .guide-tag {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--teal-dark);
+  background: var(--gold);
+  padding: 4px 14px;
+  border-radius: 50px;
+  margin-bottom: 16px;
+}
+.article-hero h1 { color: var(--white); max-width: 760px; }
+.article-hero .article-meta { color: #c7cede; font-size: 0.9rem; }
+
+.article-body {
+  max-width: 760px;
+  margin: 0 auto;
+}
+.article-body h2 { color: var(--teal); margin-top: 1.6em; }
+.article-body h3 { color: var(--navy); }
+.article-body p, .article-body li { color: #313b52; }
+.article-body ul, .article-body ol { padding-left: 1.3em; }
+.article-video {
+  position: relative;
+  width: 100%;
+  padding-top: 56.25%;
+  border-radius: var(--radius);
+  overflow: hidden;
+  margin: 32px 0;
+  background: var(--navy);
+}
+.article-video iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+.article-callout {
+  background: var(--cream);
+  border-left: 4px solid var(--gold);
+  padding: 20px 24px;
+  border-radius: 0 10px 10px 0;
+  margin: 28px 0;
+}
+.article-callout p:last-child { margin-bottom: 0; }
+.article-author {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 48px;
+  padding-top: 28px;
+  border-top: 1px solid var(--border);
+}
+.article-author img { width: 56px; height: 56px; border-radius: 50%; object-fit: cover; }
+.article-author .name { font-weight: 700; color: var(--navy); }
+.article-author .role { font-size: 0.85rem; color: #7a8296; }
 
 /* ---------- Legal pages ---------- */
 .legal-content h2 { color: var(--teal); margin-top: 1.6em; }
