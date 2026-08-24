@@ -116,6 +116,38 @@ img { max-width: 100%; display: block; }
   transition: 0.2s;
 }
 
+/* ---------- Audience tabs (Particuliers / Dirigeants) ---------- */
+.audience-tabs {
+  position: sticky;
+  top: 85px;
+  z-index: 99;
+  background: var(--white);
+  border-top: 3px solid var(--gold);
+  border-bottom: 1px solid var(--border);
+}
+.audience-tabs .container {
+  display: flex;
+  justify-content: center;
+  gap: 48px;
+}
+.audience-tabs a {
+  padding: 15px 4px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: #99a0b0;
+  border-bottom: 3px solid transparent;
+  margin-bottom: -1px;
+}
+.audience-tabs a:hover {
+  color: var(--navy);
+  text-decoration: none;
+}
+.audience-tabs a.active {
+  color: var(--navy);
+  border-bottom-color: var(--gold);
+}
+
 .btn {
   display: inline-block;
   padding: 13px 28px;
@@ -590,4 +622,6 @@ form.contact-form .consent { font-size: 0.82rem; color: #5a6377; margin-bottom: 
   .stats { grid-template-columns: repeat(2, 1fr); }
   .grid-3, .grid-4, .grid-2 { grid-template-columns: 1fr; }
   .logo-strip { grid-template-columns: repeat(3, 1fr); }
+  .audience-tabs .container { gap: 24px; }
+  .audience-tabs a { font-size: 0.85rem; }
 }
