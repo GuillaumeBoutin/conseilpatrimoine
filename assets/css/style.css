@@ -71,7 +71,7 @@ img { max-width: 100%; display: block; }
   font-weight: 600;
   margin-bottom: 10px;
 }
-.hero-text .kicker { color: var(--gold); margin-bottom: 14px; }
+.hero-text .kicker { color: var(--gold); margin-bottom: 16px; font-size: 1.05rem; letter-spacing: 0.16em; }
 
 /* ---------- Header ---------- */
 .site-header {
