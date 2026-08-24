@@ -1,13 +1,14 @@
 /* ===== L&E Conseil Finance et Patrimoine — feuille de style principale ===== */
 
 :root {
-  --navy: #1f2839;
-  --gold: #d3bf8a;
-  --teal: #03475f;
-  --teal-dark: #022f3f;
-  --cream: #faf8f4;
+  --navy: #161d2b;
+  --gold: #bd9a63;
+  --gold-light: #d3bf8a;
+  --teal: #023246;
+  --teal-dark: #011c28;
+  --cream: #f8f3e9;
   --white: #ffffff;
-  --border: #e7e2d6;
+  --border: #e2d9c4;
   --radius: 14px;
   --max-width: 1180px;
   --font-serif: "Noto Serif", Georgia, serif;
