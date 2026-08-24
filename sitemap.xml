@@ -13,6 +13,10 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://le-conseilpatrimoine.fr/professions-liberales/</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://le-conseilpatrimoine.fr/cabinet/</loc>
     <priority>0.7</priority>
   </url>
