@@ -294,6 +294,53 @@ img { max-width: 100%; display: block; }
   font-size: 0.95rem;
 }
 
+/* ---------- 360° accompaniment strip ---------- */
+.accomp-360 {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+}
+.accomp-360 .card { text-align: left; }
+.accomp-360 .icon-badge { margin-bottom: 14px; }
+.accomp-360 h3 { font-size: 1.1rem; margin-bottom: 8px; }
+.accomp-360 p { color: #45506a; font-size: 0.92rem; margin: 0; }
+
+/* ---------- Comparison table ---------- */
+.compare-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--white);
+}
+.compare-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 560px;
+}
+.compare-table th, .compare-table td {
+  padding: 16px 20px;
+  text-align: center;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.95rem;
+}
+.compare-table th {
+  font-family: var(--font-serif);
+  font-weight: 700;
+  color: var(--navy);
+}
+.compare-table td:first-child, .compare-table th:first-child {
+  text-align: left;
+  font-weight: 600;
+  color: var(--navy);
+}
+.compare-table tr:last-child td { border-bottom: none; }
+.compare-table .compare-us {
+  background: var(--cream);
+}
+.compare-table .yes { color: var(--teal); font-weight: 700; }
+.compare-table .no { color: #c3c9d4; }
+.compare-table .partial { color: #99a0b0; }
+
 /* ---------- Team ---------- */
 .team-card {
   text-align: center;
@@ -598,6 +645,7 @@ form.contact-form .consent { font-size: 0.82rem; color: #5a6377; margin-bottom: 
   .hero-img { order: -1; }
   .stats { grid-template-columns: repeat(2, 1fr); }
   .grid-3, .grid-4 { grid-template-columns: repeat(2, 1fr); }
+  .accomp-360 { grid-template-columns: repeat(2, 1fr); }
   .logo-strip { grid-template-columns: repeat(4, 1fr); }
   .contact-grid { grid-template-columns: 1fr; }
   .footer-grid { grid-template-columns: 1fr; gap: 24px; }
@@ -621,6 +669,7 @@ form.contact-form .consent { font-size: 0.82rem; color: #5a6377; margin-bottom: 
   .nav-toggle { display: block; }
   .stats { grid-template-columns: repeat(2, 1fr); }
   .grid-3, .grid-4, .grid-2 { grid-template-columns: 1fr; }
+  .accomp-360 { grid-template-columns: 1fr; }
   .logo-strip { grid-template-columns: repeat(3, 1fr); }
   .audience-tabs .container { gap: 24px; }
   .audience-tabs a { font-size: 0.85rem; }
