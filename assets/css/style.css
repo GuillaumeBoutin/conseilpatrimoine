@@ -71,7 +71,7 @@ img { max-width: 100%; display: block; }
   font-weight: 600;
   margin-bottom: 10px;
 }
-.hero-text .kicker { color: var(--gold); margin-bottom: 16px; font-size: 1.05rem; letter-spacing: 0.16em; }
+.hero-text .kicker { color: var(--gold); margin-bottom: 16px; font-size: 1.05rem; letter-spacing: 0.16em; text-shadow: 0 1px 3px rgba(0,0,0,0.7), 0 2px 14px rgba(0,0,0,0.5); }
 
 /* ---------- Header ---------- */
 .site-header {
@@ -202,7 +202,7 @@ img { max-width: 100%; display: block; }
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(22, 29, 43, 0.1) 0%, rgba(22, 29, 43, 0.55) 55%, rgba(22, 29, 43, 0.94) 100%);
+  background: linear-gradient(180deg, rgba(22, 29, 43, 0.4) 0%, rgba(22, 29, 43, 0.6) 55%, rgba(22, 29, 43, 0.94) 100%);
 }
 .hero .container {
   position: relative;
