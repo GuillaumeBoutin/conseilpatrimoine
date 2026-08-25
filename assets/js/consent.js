@@ -1,17 +1,15 @@
 (function () {
-  var GA_MEASUREMENT_ID = "G-REMPLACER_PAR_VOTRE_ID";
+  var GTM_ID = "GTM-ML6QN98N";
   var CONSENT_KEY = "cookie-consent";
 
   function loadGA() {
-    if (!GA_MEASUREMENT_ID || GA_MEASUREMENT_ID.indexOf("REMPLACER") !== -1) return;
+    if (!GTM_ID) return;
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({ "gtm.start": new Date().getTime(), event: "gtm.js" });
     var script = document.createElement("script");
     script.async = true;
-    script.src = "https://www.googletagmanager.com/gtag/js?id=" + GA_MEASUREMENT_ID;
+    script.src = "https://www.googletagmanager.com/gtm.js?id=" + GTM_ID;
     document.head.appendChild(script);
-    window.dataLayer = window.dataLayer || [];
-    window.gtag = function () { window.dataLayer.push(arguments); };
-    window.gtag("js", new Date());
-    window.gtag("config", GA_MEASUREMENT_ID, { anonymize_ip: true });
   }
 
   function getConsent() {
