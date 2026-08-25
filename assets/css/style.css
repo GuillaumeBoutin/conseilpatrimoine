@@ -590,6 +590,38 @@ form.contact-form .consent { font-size: 0.82rem; color: #5a6377; margin-bottom: 
   font-size: 0.85rem;
 }
 
+/* ---------- Cookie banner ---------- */
+.cookie-banner {
+  position: fixed;
+  left: 20px;
+  right: 20px;
+  bottom: 20px;
+  z-index: 200;
+  max-width: 720px;
+  margin: 0 auto;
+  background: var(--navy);
+  color: #dfe4ee;
+  border-radius: 12px;
+  padding: 20px 24px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.35);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px;
+  font-size: 0.9rem;
+}
+.cookie-banner-text { flex: 1 1 320px; line-height: 1.5; }
+.cookie-banner-text a { color: var(--gold); text-decoration: underline; }
+.cookie-banner-actions { display: flex; gap: 10px; flex-shrink: 0; }
+.cookie-banner .btn { padding: 10px 18px; font-size: 0.85rem; }
+.cookie-banner .btn-outline { border: 1px solid rgba(255,255,255,0.35); color: #dfe4ee; }
+.cookie-banner .btn-outline:hover { border-color: var(--white); color: var(--white); }
+@media (max-width: 640px) {
+  .cookie-banner { left: 12px; right: 12px; bottom: 12px; padding: 18px; }
+  .cookie-banner-actions { width: 100%; }
+  .cookie-banner-actions .btn { flex: 1; text-align: center; }
+}
+
 /* ---------- Guides / Blog ---------- */
 .guide-filters {
   display: flex;
