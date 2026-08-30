@@ -77,6 +77,18 @@
     <priority>0.5</priority>
   </url>
   <url>
+    <loc>https://le-conseilpatrimoine.fr/guides/professions-liberales/</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://le-conseilpatrimoine.fr/guides/professions-liberales/spfpl-societe-participations-financieres/</loc>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://le-conseilpatrimoine.fr/guides/professions-liberales/retraite-base-cnavpl/</loc>
+    <priority>0.5</priority>
+  </url>
+  <url>
     <loc>https://le-conseilpatrimoine.fr/mentions-legales/</loc>
     <priority>0.2</priority>
   </url>
