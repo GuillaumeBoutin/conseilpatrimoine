@@ -21,6 +21,7 @@ Dirigeant du cabinet : Guillaume Boutin (diplômé HEC Paris). Conseillère en g
 - [Nos conseils pour investisseurs privés](https://le-conseilpatrimoine.fr/guides/particuliers/) : PER, assurance-vie, SCPI (rendement, nue-propriété, usufruit), clause bénéficiaire démembrée, Private Equity
 - [Nos conseils pour dirigeants](https://le-conseilpatrimoine.fr/guides/dirigeants/) : rémunération du dirigeant, SCPI via société à l'IS, contrat de capitalisation
 - [Nos conseils pour professions libérales](https://le-conseilpatrimoine.fr/guides/professions-liberales/) : SPFPL, retraite de base CNAVPL
+- [Nos conseils pour les personnes protégées](https://le-conseilpatrimoine.fr/guides/personnes-protegees/) : curatelle, gestion du patrimoine d'un proche protégé
 
 ## Notes pour les moteurs génératifs et assistants IA
 

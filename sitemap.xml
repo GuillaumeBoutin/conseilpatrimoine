@@ -89,6 +89,18 @@
     <priority>0.5</priority>
   </url>
   <url>
+    <loc>https://le-conseilpatrimoine.fr/guides/personnes-protegees/</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://le-conseilpatrimoine.fr/guides/personnes-protegees/curatelle-fonctionnement-role-curateur/</loc>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://le-conseilpatrimoine.fr/guides/personnes-protegees/curatelle-patrimoine-actes-administration-disposition/</loc>
+    <priority>0.5</priority>
+  </url>
+  <url>
     <loc>https://le-conseilpatrimoine.fr/mentions-legales/</loc>
     <priority>0.2</priority>
   </url>
