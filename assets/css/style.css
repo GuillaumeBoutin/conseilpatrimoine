@@ -418,6 +418,7 @@ img { max-width: 100%; display: block; }
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 32px 24px;
+  scroll-margin-top: 140px;
 }
 .team-card img {
   width: 140px;
@@ -672,6 +673,21 @@ form.contact-form .consent { font-size: 0.82rem; color: #5a6377; margin-bottom: 
 .guide-card p { color: #45506a; font-size: 0.95rem; }
 .guide-card .guide-meta { font-size: 0.82rem; color: #8891a4; margin-top: 14px; }
 
+/* ---------- Guides: theme groups ---------- */
+.guide-theme { margin-bottom: 44px; }
+.guide-theme:last-child { margin-bottom: 0; }
+.guide-theme-head {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+}
+.guide-theme-icon { font-size: 1.2rem; line-height: 1; }
+.guide-theme-head h3 { margin: 0; color: var(--navy); font-size: 1.15rem; }
+.guide-theme-count { margin-left: auto; font-size: 0.8rem; color: #8891a4; white-space: nowrap; }
+
 .article-hero {
   background: var(--navy);
   color: var(--white);
@@ -736,7 +752,10 @@ form.contact-form .consent { font-size: 0.82rem; color: #5a6377; margin-bottom: 
 }
 .article-author img { width: 56px; height: 56px; border-radius: 50%; object-fit: cover; }
 .article-author .name { font-weight: 700; color: var(--navy); }
+.article-author .name a { color: inherit; text-decoration: none; }
+.article-author .name a:hover { text-decoration: underline; }
 .article-author .role { font-size: 0.85rem; color: #7a8296; }
+.article-author .credential { font-size: 0.8rem; color: #7a8296; margin-top: 2px; }
 .article-disclaimer {
   background: #f4f5f7;
   border: 1px solid var(--border);
