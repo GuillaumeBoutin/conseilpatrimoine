@@ -345,7 +345,7 @@ img { max-width: 100%; display: block; }
   border: 2px solid var(--border);
   border-radius: var(--radius);
   padding: 36px 32px;
-  text-align: left;
+  text-align: center;
   transition: 0.2s;
 }
 .audience-card:hover {
