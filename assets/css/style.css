@@ -755,7 +755,6 @@ form.contact-form .consent { font-size: 0.82rem; color: #5a6377; margin-bottom: 
 .article-author .name a { color: inherit; text-decoration: none; }
 .article-author .name a:hover { text-decoration: underline; }
 .article-author .role { font-size: 0.85rem; color: #7a8296; }
-.article-author .credential { font-size: 0.8rem; color: #7a8296; margin-top: 2px; }
 .article-disclaimer {
   background: #f4f5f7;
   border: 1px solid var(--border);
