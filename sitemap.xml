@@ -105,6 +105,14 @@
     <priority>0.5</priority>
   </url>
   <url>
+    <loc>https://le-conseilpatrimoine.fr/guides/personnes-protegees/mandat-de-protection-future/</loc>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://le-conseilpatrimoine.fr/guides/personnes-protegees/mandat-protection-future-pour-autrui/</loc>
+    <priority>0.5</priority>
+  </url>
+  <url>
     <loc>https://le-conseilpatrimoine.fr/mentions-legales/</loc>
     <priority>0.2</priority>
   </url>
