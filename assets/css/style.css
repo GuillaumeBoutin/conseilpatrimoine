@@ -323,6 +323,7 @@ img { max-width: 100%; display: block; }
   padding: 30px;
   border-top: 3px solid var(--gold);
 }
+.value-card p { text-align: justify; hyphens: auto; }
 
 .icon-badge {
   width: 52px;
