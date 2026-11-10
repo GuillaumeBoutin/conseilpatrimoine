@@ -183,10 +183,11 @@ const SYN_CSS=`
 .syn .s-al h4{margin:0 0 1.5mm;font-size:9pt;font-weight:600;color:#b4541a}.syn .s-al.s-ok h4{color:#6e8227}
 .syn .s-al li{margin:.6mm 0}
 .syn .s-ft{position:absolute;left:17mm;right:13mm;bottom:6mm;display:flex;justify-content:space-between;font-size:6.8pt;color:#8a8a8a;border-top:.3mm solid #cac2c2;padding-top:1.5mm}
+.syn .s-com{margin-top:4mm;border:.3mm solid #03475f;border-radius:3mm;padding:3mm 4mm;font-size:8.6pt}.syn .s-com h4{margin:0 0 1.5mm;font-size:9pt;font-weight:600;color:#03475f}
 .syn .s-note{margin-top:4mm;font-size:7.4pt;color:#8a8a8a;font-style:italic}`;
 
 function ring(v){const C=2*Math.PI*14;return `<svg viewBox="0 0 34 34"><circle cx="17" cy="17" r="14" fill="none" stroke="#e6e2de" stroke-width="4"/>${v?`<circle cx="17" cy="17" r="14" fill="none" stroke="#6e8227" stroke-width="4" stroke-dasharray="${C*v/100} ${C}" transform="rotate(-90 17 17)"/>`:""}</svg>`}
-function synthHTML(A,ID,conseiller){
+function synthHTML(A,ID,conseiller,opts={}){
   const r=analyse(A), esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
   const tolL=r.axes[0][1], capL=r.axes[1][1];
   let xp=0;PRODS.forEach((_,i)=>{const v=A["Q17_"+(i+1)];if(v==="3"||v==="4")xp++});
@@ -242,12 +243,13 @@ function synthHTML(A,ID,conseiller){
   const today=new Date().toLocaleDateString("fr-FR");
   return `<style>${SYN_CSS}</style><section class="syn">
   <div class="s-hd"><div><div class="s-brand">L&amp;E <span>Conseil Finance Patrimoine</span></div><h1>Synthèse du profil investisseur</h1></div>
-  <div class="meta"><b>${esc(ID.prenom)} ${esc(ID.nom)}</b><br>${ID.naissance?"Né(e) le "+esc(ID.naissance)+"<br>":""}Questionnaire du ${today}<br>Conseiller : ${esc(conseiller||"—")}</div></div>
+  <div class="meta"><b>${esc(ID.prenom)} ${esc(ID.nom)}</b><br>${ID.naissance?"Né(e) le "+esc(ID.naissance)+"<br>":""}Questionnaire du ${esc(opts.date||today)}<br>${opts.revised?`<b style="color:#a88918">Mis à jour le ${today}</b><br>`:""}Conseiller : ${esc(conseiller||"—")}</div></div>
   <div class="s-hero"><div><div class="s-k">Profil de risque retenu</div><div class="s-p">${r.fin!=null?LV[r.fin]:"Incomplet"}</div></div>
   <div class="s-d">Le profil retenu est le plus prudent entre la tolérance au risque, la capacité à subir des pertes, l'horizon de placement et la perte en capital acceptée.</div>
   <div class="s-sri">SRI<b>${r.fin!=null?SRI[r.fin]:"—"}</b></div></div>
   <div class="s-grid">${knCard}${rkCard}${capCard}${esgCard}${prefCard}<div>${alerts}</div></div>
-  <div class="s-note">Pré-profil établi à partir des déclarations du client. Il sera validé lors d'un entretien avec le conseiller, en tenant compte de l'ensemble de sa situation.</div>
+  ${opts.comment?`<div class="s-com"><h4>Commentaire du conseiller${opts.revised?" – profil ajusté le "+today:""}</h4>${esc(opts.comment).replace(/\n/g,"<br>")}</div>`:""}
+  <div class="s-note">${opts.revised?"Profil recalculé après échange avec le conseiller, à partir des réponses ajustées du questionnaire.":"Pré-profil établi à partir des déclarations du client. Il sera validé lors d'un entretien avec le conseiller, en tenant compte de l'ensemble de sa situation."}</div>
   <div class="s-ft"><span>L&amp;E Conseil Finance Patrimoine · R.C.S. Orléans 892 822 388 · ORIAS 21001105 · www.le-conseilpatrimoine.fr</span><span>Synthèse</span></div>
   </section>`;
 }
@@ -487,7 +489,7 @@ async function buildPdf(p){
         if(m)on=(A[m[1]]||[]).includes(+m[2]);else if(t)on=(A.Q30_t||[]).includes(+t[1]);else if(n==="Q10_deja")on=!!A.Q10_deja;
         if(on)fld.check()}
     }catch(_){}}
-  const helv=await doc.embedFont(L.StandardFonts.Helvetica);form.updateFieldAppearances(helv);form.flatten();
+  const helv=await doc.embedFont(L.StandardFonts.Helvetica);form.updateFieldAppearances(helv);
   // page de synthèse
   const box=document.createElement("div");box.style.cssText="position:fixed;left:-10000px;top:0;width:210mm;background:#fff";
   box.innerHTML=synthHTML(A,{prenom:p.prenom,nom:p.nom,naissance:p.naissance},ADVISORS[advisor][0]+" "+ADVISORS[advisor][1]);
@@ -498,6 +500,7 @@ async function buildPdf(p){
     const pg=doc.addPage([595.28,841.89]);pg.drawImage(jpg,{x:0,y:0,width:595.28,height:841.89});
   }finally{box.remove()}
   doc.setTitle(`Profil investisseur – ${p.prenom} ${p.nom}`);doc.setAuthor("L&E Conseil Finance Patrimoine");
+  doc.setSubject("LE-PROFIL:"+btoa(unescape(encodeURIComponent(JSON.stringify({prenom:p.prenom,nom:p.nom,email:p.email,tel:p.tel,naissance:p.naissance,conseiller:ADVISORS[advisor][0]+" "+ADVISORS[advisor][1],profil:analyse(A).fin,date:new Date().toLocaleDateString("fr-FR")})))));
   return new Blob([await doc.save()],{type:"application/pdf"});
 }
 async function send(){
