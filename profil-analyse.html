@@ -125,6 +125,8 @@ dl.kv dt{color:var(--muted)}dl.kv dd{margin:0}
 .gate{max-width:440px;margin:40px auto 0;background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:26px;text-align:center}
 .gate input{text-align:center;letter-spacing:.15em;text-transform:uppercase;font-size:20px;margin:16px 0 4px}
 .testbar{background:var(--gold);color:#fff;text-align:center;font-size:13px;font-weight:600;padding:6px 10px;border-radius:8px;margin-bottom:10px}
+.warnq{margin:12px 0 0 36px;background:var(--warnbg);border-left:4px solid var(--warn);border-radius:0 10px 10px 0;padding:10px 12px;font-size:14px}
+@media (max-width:640px){.warnq{margin-left:0}}
 .hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
 </style>
 
@@ -261,17 +263,17 @@ const STEPS=[
  {k:"Étape 1",title:"Votre situation",sub:"Pour mesurer objectivement votre capacité à faire face à une baisse ou à une perte.",qs:[
   R("Q01","Votre âge",["Moins de 35 ans","35 à 49 ans","50 à 64 ans","65 à 74 ans","75 ans et plus"]),
   R("Q02","Dans les années à venir, vos revenus devraient…",["Augmenter","Rester stables","Baisser ou être irréguliers","Je ne sais pas"]),
-  R("Q03","Revenus nets annuels de votre foyer",["Moins de 30 000 €","30 000 à 60 000 €","60 000 à 120 000 €","120 000 à 250 000 €","Plus de 250 000 €"]),
-  R("Q04","Combien épargnez-vous chaque mois, à titre personnel ou via votre société ?",["Je n'épargne pas","Moins de 500 €","500 à 2 000 €","Plus de 2 000 €"]),
-  R("Q05","Votre patrimoine financier",["Moins de 50 000 €","50 000 à 200 000 €","200 000 à 500 000 €","Plus de 500 000 €"],{hint:"Livrets, assurance-vie, PEA, comptes-titres, PER… (hors biens professionnels)"}),
-  R("Q06","Votre patrimoine immobilier, crédits déduits",["Aucun","Moins de 300 000 €","300 000 € à 1 M€","Plus de 1 M€"]),
+  R("Q03","Revenus nets annuels de votre foyer",["Moins de 30 000 €","30 000 à 60 000 €","60 000 à 120 000 €","120 000 à 250 000 €","Plus de 250 000 €","Je préfère ne pas répondre"]),
+  R("Q04","Combien épargnez-vous chaque mois, à titre personnel ou via votre société ?",["Je n'épargne pas","Moins de 500 €","500 à 2 000 €","Plus de 2 000 €","Non concerné : je suis retraité(e), je vis de mes revenus et placements"]),
+  R("Q05","Votre patrimoine financier",["Moins de 50 000 €","50 000 à 200 000 €","200 000 à 500 000 €","500 000 € à 1 M€","Plus de 1 M€","Je préfère ne pas répondre"],{hint:"Livrets, assurance-vie, PEA, comptes-titres, PER… (hors biens professionnels)"}),
+  R("Q06","Votre patrimoine immobilier, crédits déduits",["Aucun","Moins de 300 000 €","300 000 € à 1 M€","Plus de 1 M€","Je préfère ne pas répondre"]),
   R("Q07","Part de vos revenus consacrée au remboursement de crédits",["Aucun crédit","Moins de 20 %","20 à 35 %","Plus de 35 %"]),
-  R("Q08","Votre épargne de précaution disponible représente…",["Moins de 3 mois de dépenses","3 à 6 mois","6 à 12 mois","Plus de 12 mois"],{hint:"Somme mobilisable immédiatement en cas d'imprévu"}),
+  R("Q08","En dehors de la somme que vous souhaitez placer, de combien d'épargne disponible disposez-vous en cas d'imprévu ?",["Moins de 3 mois de dépenses","3 à 6 mois","6 à 12 mois","Plus de 12 mois"],{hint:"Livrets, comptes courants… mobilisables immédiatement"}),
   {id:"Q09",type:"extra"},
   R("Q11","Votre statut",["Dirigeant","Salarié","Indépendant / libéral","Retraité","Autre"])]},
  {k:"Étape 2",title:"Vos projets",sub:"Pour orienter les solutions vers ce qui compte vraiment pour vous.",qs:[
   M("Q12","Vos objectifs pour ce placement",OBJ,{hint:"2 réponses maximum",max:2}),
-  R("Q13","Dans combien de temps pourriez-vous avoir besoin de cet argent ?",["Moins de 2 ans","2 à 3 ans","3 à 5 ans","5 à 8 ans","Plus de 8 ans"]),
+  R("Q13","Pour l'essentiel de la somme placée, dans combien de temps pensez-vous en avoir besoin ?",["Moins de 2 ans","2 à 3 ans","3 à 5 ans","5 à 8 ans","Plus de 8 ans"]),
   R("Q14","Quelle part de votre patrimoine total représente ce placement ?",["Moins de 10 %","10 à 25 %","25 à 50 %","Plus de 50 %"]),
   R("Q15","Pendant la durée du placement, vous souhaitez…",["Laisser fructifier sans y toucher","Percevoir des revenus réguliers","Pouvoir retirer une partie si besoin","Pouvoir tout récupérer à tout moment"]),
   M("Q16","Y a-t-il des placements que vous refusez ?",EXCL,{hint:"Plusieurs réponses possibles",opt:true})]},
@@ -294,7 +296,7 @@ const STEPS=[
   R("Q29","Vos préférences en matière de durabilité",["Non, je n'ai pas de préférence particulière","Oui, je souhaite les préciser"]),
   {id:"Q30",type:"esg",t:"Quelle part de votre placement souhaitez-vous consacrer à chacun de ces engagements ?",hint:"Choisissez uniquement les lignes qui vous intéressent, laissez les autres vides.",when:()=>A.Q29==="2"}]}
 ];
-const PTS={Q01:[3,3,2,1,0],Q02:[3,2,0,1],Q03:[0,1,2,3,3],Q04:[0,1,2,3],Q05:[0,1,2,3],Q06:[0,1,2,3],Q07:[3,2,1,0],Q08:[0,1,2,3],Q14:[3,2,1,0],
+const PTS={Q01:[3,3,2,1,0],Q02:[3,2,0,1],Q03:[0,1,2,3,3,null],Q04:[0,1,2,3,null],Q05:[0,1,2,3,3,null],Q06:[0,1,2,3,null],Q07:[3,2,1,0],Q08:[0,1,2,3],Q14:[3,2,1,0],
  Q22:[0,1,2,3,4],Q23:[0,1,2,3,4],Q24:[0,1,3,4],Q25:[0,1,2,3,4],Q26:[0,1,2,3,4],Q27:[0,2,4]};
 const CAPQ=["Q01","Q02","Q03","Q04","Q05","Q06","Q07","Q08","Q14"],TOLQ=["Q22","Q23","Q24","Q25","Q26","Q27"];
 const OPT13=["Moins de 2 ans","2 à 3 ans","3 à 5 ans","5 à 8 ans","Plus de 8 ans"];
@@ -304,17 +306,23 @@ function analyse(Ans){
   const pts=id=>Ans[id]?PTS[id][+Ans[id]-1]:null;
   const sum=ids=>{let s=0,n=0;ids.forEach(i=>{const p=pts(i);if(p!=null){s+=p;n++}});return{s,n}};
   const band=(s,c)=>c.findIndex(x=>s<=x);
-  const tol=sum(TOLQ),cap=sum(CAPQ);
+  const tol=sum(TOLQ);
+  // capacité : réponses « ne souhaite pas répondre / non concerné » neutralisées, score ramené sur 27
+  const big=Ans.Q05==="4"||Ans.Q05==="5";
+  let cs=0,cn=0;CAPQ.forEach(i=>{let p=pts(i);if(p==null)return;if(i==="Q14"&&big)p=Math.max(p,2);cs+=p;cn++});
+  const cap={s:cn?Math.round(cs/(cn*3)*27):0,n:cn};
   const tolL=tol.n?band(tol.s,[4,9,14,19,24]):null;
-  let capL=cap.n?Math.max(1,band(cap.s,[-1,7,12,19,27])):null; if(Ans.Q08==="1")capL=0;
-  const horL=Ans.Q13?+Ans.Q13-1:null, lossL=Ans.Q28?(Ans.Q28==="1"?0:4):null;
+  let capL=cap.n?Math.max(1,band(cap.s,[-1,7,12,19,27])):null; if(Ans.Q08==="1"&&capL!=null)capL=Math.max(0,capL-1);
+  const horL=Ans.Q13?[1,1,2,3,4][+Ans.Q13-1]:null, lossL=Ans.Q28?(Ans.Q28==="1"?1:4):null;
   const axes=[["Tolérance au risque",tolL,tol.s+" / 24"],["Capacité à subir des pertes",capL,cap.s+" / 27"],["Horizon",horL,Ans.Q13?OPT13[+Ans.Q13-1]:"—"],["Perte en capital",lossL,Ans.Q28?(Ans.Q28==="1"?"Aucune acceptée":["","Limitée","Totale (petite poche)","Au-delà (levier)"][+Ans.Q28-1]):"—"]];
   const ks=axes.map(a=>a[1]).filter(l=>l!=null), fin=ks.length?Math.min(...ks):null;
   let quiz=0;QUIZ.forEach((q,i)=>{if(Ans["Q21_"+String(i+1).padStart(2,"0")]===q[1])quiz++});
   let xp=0;PRODS.forEach((_,i)=>{const v=Ans["Q17_"+(i+1)];if(v==="3"||v==="4")xp++});
   const kn=quiz+xp+((Ans.Q19==="3"||Ans.Q19==="4")?1:0)+(Ans.Q20==="1"?1:0), knL=band(kn,[6,12,17,22]);
   const al=[];
-  if(Ans.Q08==="1")al.push("Épargne de précaution inférieure à 3 mois.");
+  if(Ans.Q08==="1")al.push("Épargne de précaution inférieure à 3 mois : capacité abaissée d'un niveau, à vérifier.");
+  if(Ans.Q28==="1")al.push("Aucune perte en capital acceptée : profil plafonné à Prudent, supports garantis à privilégier – à valider en rendez-vous.");
+  if(Ans.Q03==="6"||Ans.Q05==="6"||Ans.Q06==="5")al.push("Revenus ou patrimoine non communiqués : à compléter en rendez-vous.");
   if(Ans.Q15==="4")al.push("Disponibilité totale exigée : exclure SCPI, non coté, structurés.");
   if(Ans.Q07==="4")al.push("Taux d'effort supérieur à 35 %.");
   if(Ans.Q02==="3")al.push("Revenus susceptibles de baisser ou irréguliers.");
@@ -324,7 +332,7 @@ function analyse(Ans){
   const yr=parseInt(Ans.Q10,10),now=new Date().getFullYear();
   if(Ans.Q10_deja||Ans.Q11==="4")al.push("Client retraité : vigilance liquidité et transmission.");else if(yr&&yr>=now&&yr-now<5)al.push(`Retraite dans moins de 5 ans (${yr}).`);
   if(Ans.Q01==="5")al.push("75 ans et plus : vigilance horizon et transmission.");
-  if(Ans.Q13==="1")al.push("Horizon inférieur à 2 ans.");
+  if(Ans.Q13==="1"||Ans.Q13==="2")al.push("Horizon inférieur à 3 ans : profil plafonné à Prudent.");
   return{axes,fin,tol:tol.s,cap:cap.s,quiz,kn,knL,al};
 }
 

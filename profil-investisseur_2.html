@@ -1,0 +1,546 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Profil investisseur – L&amp;E Conseil Finance Patrimoine</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;500;600&family=DM+Serif+Display&family=Noto+Serif+Display:ital,wght@0,400;1,300&display=swap">
+<style>
+/* Parcours client pas à pas (une étape par écran, barre de progression), puis espace conseillers réservé aux éditeurs */
+:root{
+  --blue:#03475f; --gold:#a88918; --green:#6e8227; --grey:#cac2c2;
+  --bg:#f7f5f3; --surface:#ffffff; --fg:#22323a; --muted:#66737a; --line:#e3ddd8; --chip:#efebe7; --onblue:#ffffff;
+  --p1:#7fa7b5; --p2:#3f7d93; --p3:#03475f; --p4:#6e8227; --p5:#a88918;
+  --warn:#b4541a; --warnbg:#fbeee4; --okbg:#eef2e4;
+  --display:"DM Serif Display",Georgia,serif; --sub:"Noto Serif Display",Georgia,serif; --body:"Barlow",system-ui,sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0d1a20; --surface:#14262e; --fg:#e7ecee; --muted:#9aa9b0; --line:#25404b; --chip:#1c3540; --onblue:#0d1a20;
+  --blue:#6fb3cc; --p3:#2f86a6; --gold:#d4b043; --green:#a4bd55; --warn:#f0965a; --warnbg:#3a2516; --okbg:#1f2e18; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0d1a20; --surface:#14262e; --fg:#e7ecee; --muted:#9aa9b0; --line:#25404b; --chip:#1c3540; --onblue:#0d1a20;
+  --blue:#6fb3cc; --p3:#2f86a6; --gold:#d4b043; --green:#a4bd55; --warn:#f0965a; --warnbg:#3a2516; --okbg:#1f2e18; color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-weight:300;font-size:16px;line-height:1.45}
+b,strong{font-weight:600}
+.wrap{max-width:820px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:18px 60px}
+.top{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.brand{font-family:var(--display);font-size:18px;color:var(--blue)}.brand span{font-family:var(--sub);font-size:13px;color:var(--muted);margin-left:6px}
+.linkbtn{font:500 13px var(--body);background:none;border:1px solid var(--line);color:var(--muted);border-radius:999px;padding:6px 12px;cursor:pointer}
+h1{font-family:var(--display);font-weight:400;color:var(--blue);font-size:clamp(30px,6vw,46px);line-height:1.05;margin:0;text-wrap:balance}
+h2{font-family:var(--display);font-weight:400;color:var(--blue);font-size:clamp(24px,4.5vw,30px);margin:0;line-height:1.1;text-wrap:balance}
+.lead{font-family:var(--sub);font-size:18px;color:var(--muted);margin:10px 0 0;max-width:58ch}
+.muted{color:var(--muted)}
+/* progression */
+.prog{margin:18px 0 22px;display:flex;gap:6px}
+.prog i{flex:1;height:6px;border-radius:3px;background:var(--line)}
+.prog i.done{background:var(--green)}.prog i.on{background:var(--gold)}
+.stephead{display:flex;gap:14px;align-items:center;margin-bottom:6px}
+.badge{flex:none;width:52px;height:52px;border-radius:14px;background:var(--blue);color:var(--onblue);font-family:var(--display);font-size:30px;display:flex;align-items:center;justify-content:center}
+.kick{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--gold);font-weight:600}
+.sub{font-family:var(--sub);font-style:italic;color:var(--muted);margin:2px 0 18px}
+/* questions */
+.q{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:12px}
+.q.miss{border-color:var(--warn);box-shadow:0 0 0 2px var(--warnbg)}
+.qt{display:flex;gap:10px;font-weight:500;color:var(--blue);line-height:1.3}
+.qn{flex:none;width:26px;height:26px;border-radius:50%;background:var(--gold);color:#fff;font-family:var(--display);font-size:14px;display:flex;align-items:center;justify-content:center}
+.hint{font-size:13.5px;color:var(--muted);font-style:italic;margin:4px 0 0 36px}
+.opts{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 0 36px}
+.opt{font:400 15px var(--body);color:var(--fg);background:var(--bg);border:1.5px solid var(--line);border-radius:12px;padding:9px 14px;cursor:pointer;text-align:left}
+.opt:hover{border-color:var(--blue)}
+.opt.sel{background:var(--blue);border-color:var(--blue);color:var(--onblue);font-weight:500}
+.opt.multi::before{content:"";display:inline-block;width:12px;height:12px;border:1.5px solid currentColor;border-radius:3px;margin-right:8px;vertical-align:-1px}
+.opt.multi.sel::before{background:currentColor;box-shadow:inset 0 0 0 2px var(--blue)}
+.opt:focus-visible,.btn:focus-visible,.adv:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px 14px;align-items:center;padding:10px 0;border-top:1px solid var(--line)}
+.row:first-of-type{border-top:0}
+.row .opts{margin:0}
+.rows{margin:10px 0 0 36px}
+.rows .opt{padding:6px 11px;font-size:14px}
+input.txt{box-sizing:border-box;font:400 16px var(--body);color:var(--fg);background:var(--bg);border:1.5px solid var(--line);border-radius:10px;padding:10px 12px;width:100%}
+input.txt:focus{outline:2px solid var(--gold);outline-offset:1px}
+.fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.fields label{font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--gold);font-weight:600;display:block;margin-bottom:4px}
+.inl{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:12px 0 0 36px}
+.inl input.txt{width:110px}
+/* boites */
+.duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-bottom:14px}
+.duo div{border-radius:12px;padding:12px 14px;font-size:14.5px;background:var(--okbg);border:1px solid var(--green)}
+.duo div.r{background:var(--warnbg);border-color:var(--gold)}
+.duo b{font-family:var(--display);font-weight:400;font-size:18px;display:block;color:var(--green)}.duo .r b{color:var(--gold)}
+.chart{background:var(--bg);border-radius:10px;margin:12px 0 0 36px;padding:8px}
+.chart svg{display:block;width:100%;height:auto}
+/* nav */
+.nav{display:flex;justify-content:space-between;gap:10px;margin-top:20px;flex-wrap:wrap}
+.btn{font:500 16px var(--body);border-radius:999px;padding:12px 24px;cursor:pointer;border:1.5px solid var(--blue);background:transparent;color:var(--blue)}
+.btn.primary{background:var(--blue);color:var(--onblue)}
+.btn.gold{background:var(--gold);border-color:var(--gold);color:#fff}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.err{color:var(--warn);font-size:14.5px;margin-top:10px}
+/* accueil */
+.hero{background:var(--blue);color:var(--onblue);border-radius:20px;padding:30px 26px;margin-top:16px;position:relative;overflow:hidden}
+.hero h1{color:var(--onblue)}.hero .lead{color:var(--onblue);opacity:.85}
+.hero::after{content:"";position:absolute;right:-30px;top:-30px;width:150px;height:150px;border-radius:50%;border:12px solid var(--gold);opacity:.85}
+.steps5{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin:20px 0}
+.steps5 div{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px;font-size:13.5px}
+.steps5 b{font-family:var(--display);font-weight:400;color:var(--gold);font-size:22px;display:block}
+/* conseillers */
+.advs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:6px}
+.adv{background:var(--surface);border:2px solid var(--line);border-radius:14px;padding:16px;text-align:center;cursor:pointer;font:inherit;color:var(--fg)}
+.adv .av{width:56px;height:56px;border-radius:50%;margin:0 auto 8px;background:var(--chip);color:var(--blue);font-family:var(--display);font-size:22px;display:flex;align-items:center;justify-content:center}
+.adv.sel{border-color:var(--gold);background:var(--okbg)}.adv.sel .av{background:var(--gold);color:#fff}
+.adv b{display:block;font-weight:600}
+.consent{display:flex;gap:10px;align-items:flex-start;margin-top:16px;font-size:14.5px;cursor:pointer}
+.consent input{width:18px;height:18px;margin-top:2px;accent-color:var(--blue);flex:none}
+/* résultat */
+.res{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:24px;margin-top:16px;text-align:center}
+.res .pn{font-family:var(--display);font-size:46px;line-height:1;margin:8px 0}
+.scale{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;margin:16px 0}
+.lv{border-radius:10px;padding:10px 4px;background:var(--chip);color:var(--muted);font-size:13px}
+.lv b{display:block;font-family:var(--display);font-weight:400;font-size:20px}
+.lv.on{background:var(--c);color:#fff}
+.note{font-size:13.5px;color:var(--muted);margin-top:12px}
+.copybox{text-align:left;background:var(--bg);border-radius:12px;padding:14px;margin-top:16px;font-size:14px}
+.copybox textarea{width:100%;height:110px;font:400 12px ui-monospace,monospace;background:var(--surface);color:var(--fg);border:1px solid var(--line);border-radius:8px;padding:8px;margin-top:8px}
+/* espace conseillers */
+.filters{display:flex;flex-wrap:wrap;gap:6px;margin:14px 0}
+.tbl{overflow-x:auto;background:var(--surface);border:1px solid var(--line);border-radius:12px}
+table{border-collapse:collapse;width:100%;font-size:14.5px}
+th{text-align:left;font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);font-weight:600;padding:10px 12px;border-bottom:1px solid var(--line)}
+td{padding:10px 12px;border-top:1px solid var(--line);font-variant-numeric:tabular-nums}
+tr.click{cursor:pointer}tr.click:hover td{background:var(--chip)}
+.pill{display:inline-block;font-size:12.5px;font-weight:600;color:#fff;border-radius:999px;padding:3px 10px;background:var(--c)}
+.al{display:inline-block;font-size:12px;font-weight:600;color:var(--warn);background:var(--warnbg);border-radius:999px;padding:2px 8px}
+.detail{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px;margin-top:14px}
+.axes{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:12px 0}
+.ax{background:var(--bg);border-radius:10px;padding:10px;font-size:13px;min-width:0}
+.ax.lim{outline:2px solid var(--gold)}
+.ax b{display:block;font-family:var(--display);font-weight:400;font-size:20px;color:var(--blue)}
+.alert{padding:8px 10px;border-radius:8px;background:var(--warnbg);margin-bottom:6px;font-size:14px}
+.alert.info{background:var(--chip)}
+dl.kv{display:grid;grid-template-columns:auto minmax(0,1fr);gap:5px 14px;margin:10px 0 0;font-size:14px}
+dl.kv dt{color:var(--muted)}dl.kv dd{margin:0}
+.empty{padding:28px;text-align:center;color:var(--muted)}
+@media (max-width:640px){.fields,.duo{grid-template-columns:1fr}.advs{grid-template-columns:1fr}.steps5{grid-template-columns:repeat(2,minmax(0,1fr))}.opts,.hint,.rows,.chart,.inl{margin-left:0}.row{grid-template-columns:1fr}.axes{grid-template-columns:repeat(2,minmax(0,1fr))}.res .pn{font-size:36px}}
+.gate{max-width:440px;margin:40px auto 0;background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:26px;text-align:center}
+.gate input{text-align:center;letter-spacing:.15em;text-transform:uppercase;font-size:20px;margin:16px 0 4px}
+.testbar{background:var(--gold);color:#fff;text-align:center;font-size:13px;font-weight:600;padding:6px 10px;border-radius:8px;margin-bottom:10px}
+.warnq{margin:12px 0 0 36px;background:var(--warnbg);border-left:4px solid var(--warn);border-radius:0 10px 10px 0;padding:10px 12px;font-size:14px}
+@media (max-width:640px){.warnq{margin-left:0}}
+.hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+</style>
+
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <div class="brand">L&amp;E <span>Conseil Finance Patrimoine</span></div>
+    <a class="linkbtn" href="https://www.le-conseilpatrimoine.fr" style="text-decoration:none">Retour au site</a>
+  </div>
+  <div id="testbar"></div><main id="app"></main><div class="hp" aria-hidden="true"><label>Ne pas remplir <input id="botcheck" tabindex="-1" autocomplete="off"></label></div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script>
+/* Page de synthèse « récapitulatif du profil » – L&E Conseil Finance Patrimoine
+   synthHTML(A, ID, conseiller) -> HTML d'une page A4 (dépend de analyse(), LV, SRI, OPT13, OBJ, EXCL, PAI, PRODS déjà définis). */
+const SYN_CSS=`
+.syn{width:210mm;min-height:297mm;padding:12mm 13mm 14mm 17mm;position:relative;background:#fff;color:#22323a;font-family:"Barlow",system-ui,sans-serif;font-weight:300;font-size:9.4pt;line-height:1.35;box-sizing:border-box}
+.syn *{box-sizing:border-box}
+.syn::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4mm;background:linear-gradient(#03475f,#03475f 60%,#a88918 60%,#a88918 80%,#6e8227 80%)}
+.syn b{font-weight:600}
+.syn .s-hd{display:flex;justify-content:space-between;align-items:flex-end;border-bottom:.5mm solid #a88918;padding-bottom:3mm}
+.syn .s-brand{font-family:"DM Serif Display",Georgia,serif;font-size:13pt;color:#03475f}.syn .s-brand span{font-family:"Noto Serif Display",Georgia,serif;font-size:9pt;color:#66737a;margin-left:1.5mm}
+.syn h1{font-family:"DM Serif Display",Georgia,serif;font-weight:400;font-size:22pt;color:#03475f;margin:1.5mm 0 0;line-height:1.05}
+.syn .meta{text-align:right;font-size:8.6pt;color:#66737a;line-height:1.5}.syn .meta b{color:#22323a;font-weight:500}
+.syn .s-hero{display:flex;gap:6mm;align-items:center;background:#03475f;color:#fff;border-radius:3.5mm;padding:4mm 6mm;margin-top:5mm}
+.syn .s-hero .s-k{white-space:nowrap;font-size:7.6pt;text-transform:uppercase;letter-spacing:.35mm;color:#e8d48a;font-weight:600}
+.syn .s-hero .s-p{font-family:"DM Serif Display",Georgia,serif;font-size:26pt;line-height:1}
+.syn .s-hero .s-d{font-size:9pt;opacity:.92;max-width:105mm}
+.syn .s-hero .s-sri{white-space:nowrap;flex:none;margin-left:auto;text-align:center;border:.35mm solid rgba(255,255,255,.4);border-radius:2.5mm;padding:2mm 4mm}
+.syn .s-hero .s-sri b{display:block;font-family:"DM Serif Display",Georgia,serif;font-weight:400;font-size:16pt}
+.syn .s-grid{display:grid;grid-template-columns:1fr 1fr;gap:3.5mm;margin-top:4.5mm}
+.syn .s-card{border:.3mm solid #e3ddd8;border-radius:3mm;padding:3mm 4mm 3.5mm;break-inside:avoid}
+.syn .s-card h3{font-family:"Noto Serif Display",Georgia,serif;font-weight:500;font-size:10.5pt;color:#03475f;margin:0 0 1mm}
+.syn .s-gauge{display:flex;border-radius:1.2mm;overflow:visible;position:relative;margin-top:6.5mm}
+.syn .s-seg{flex:1;height:7mm;position:relative;display:flex;align-items:center;justify-content:center}
+.syn .s-seg:first-child{border-radius:1.2mm 0 0 1.2mm}.syn .s-seg:last-child{border-radius:0 1.2mm 1.2mm 0}
+.syn .s-seg.s-nd{flex:.9;background:#eeeae6;color:#8a8a8a;font-size:6.6pt;white-space:nowrap}
+.syn .s-lab{display:flex;margin-top:1mm}.syn .s-lab span{flex:1;text-align:center;font-size:7.4pt;color:#66737a}.syn .s-lab span.s-nd{flex:.9}
+.syn .s-lab span.s-on{color:#22323a;font-weight:600}
+.syn .s-mk{position:absolute;top:-3.4mm;width:0;height:0;border-left:1.7mm solid transparent;border-right:1.7mm solid transparent;border-top:2.6mm solid var(--m);transform:translateX(-50%)}
+.syn .s-mk i{position:absolute;bottom:3mm;left:50%;transform:translateX(-50%);font-style:normal;font-size:6.6pt;font-weight:600;color:var(--m);white-space:nowrap}
+.syn .s-txt{margin-top:3mm;font-size:8.3pt;color:#3c4a50}
+.syn .s-lnk{margin-top:2mm;font-size:8.4pt;color:#03475f;font-weight:500}
+.syn .s-legend{display:flex;gap:4mm;margin-top:1.5mm;font-size:7.2pt;color:#66737a}.syn .s-legend span::before{content:"▼ ";color:var(--m)}
+.syn dl{display:grid;grid-template-columns:auto 1fr;gap:1.6mm 4mm;margin:0;font-size:8.6pt}.syn dt{color:#66737a}.syn dd{margin:0;font-weight:400}
+.syn .s-esg{display:flex;align-items:center;gap:3mm;margin-top:2mm;font-size:8.4pt}
+.syn .s-ring{flex:none;width:9mm;height:9mm;position:relative}
+.syn .s-ring svg{width:9mm;height:9mm;display:block}
+.syn .s-ring i{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-style:normal;font-size:6.4pt;font-weight:600;color:#6e8227}
+.syn .s-esg .s-t b{display:block;font-weight:500;color:#22323a}.syn .s-esg .s-t span{color:#66737a}
+.syn .s-al{margin-top:4mm;border-left:1.4mm solid #b4541a;background:#fbeee4;border-radius:0 2.5mm 2.5mm 0;padding:3mm 4mm;font-size:8.6pt}
+.syn .s-al.s-ok{border-color:#6e8227;background:#eef2e4}
+.syn .s-al h4{margin:0 0 1.5mm;font-size:9pt;font-weight:600;color:#b4541a}.syn .s-al.s-ok h4{color:#6e8227}
+.syn .s-al li{margin:.6mm 0}
+.syn .s-ft{position:absolute;left:17mm;right:13mm;bottom:6mm;display:flex;justify-content:space-between;font-size:6.8pt;color:#8a8a8a;border-top:.3mm solid #cac2c2;padding-top:1.5mm}
+.syn .s-com{margin-top:4mm;border:.3mm solid #03475f;border-radius:3mm;padding:3mm 4mm;font-size:8.6pt}.syn .s-com h4{margin:0 0 1.5mm;font-size:9pt;font-weight:600;color:#03475f}
+.syn .s-note{margin-top:4mm;font-size:7.4pt;color:#8a8a8a;font-style:italic}`;
+
+function ring(v){const C=2*Math.PI*14;return `<svg viewBox="0 0 34 34"><circle cx="17" cy="17" r="14" fill="none" stroke="#e6e2de" stroke-width="4"/>${v?`<circle cx="17" cy="17" r="14" fill="none" stroke="#6e8227" stroke-width="4" stroke-dasharray="${C*v/100} ${C}" transform="rotate(-90 17 17)"/>`:""}</svg>`}
+function synthHTML(A,ID,conseiller,opts={}){
+  const r=analyse(A), esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+  const tolL=r.axes[0][1], capL=r.axes[1][1];
+  let xp=0;PRODS.forEach((_,i)=>{const v=A["Q17_"+(i+1)];if(v==="3"||v==="4")xp++});
+  // jauge générique : labels, couleurs, marqueurs [{i, color, label}]
+  const gauge=(labels,colors,marks)=>{
+    const n=labels.length, segW=100/(n+.9), ndW=segW*.9;
+    const on=new Set(marks.filter(m=>m.i!=null).map(m=>m.i));
+    const dup=marks.length>1&&marks[0].i===marks[1].i;
+    const mk=marks.map((m,k)=>{const left=(m.i==null?ndW/2:ndW+segW*(m.i+.5))+(dup?(k?1:-1)*segW*.2:0);return `<span class="s-mk" style="left:${left}%;--m:${m.c}">${m.l?`<i>${m.l}</i>`:""}</span>`}).join("");
+    return `<div class="s-gauge"><span class="s-seg s-nd">Non défini</span>${labels.map((_,i)=>`<span class="s-seg" style="background:${colors[i]}"></span>`).join("")}${mk}</div>
+      <div class="s-lab"><span class="s-nd"></span>${labels.map((l,i)=>`<span class="${on.has(i)?"s-on":""}">${l}</span>`).join("")}</div>`};
+  // 1. Connaissances
+  const KN=["Débutant","Informé","Averti","Expérimenté"];
+  const KNT=["Votre client connaît essentiellement les produits financiers les plus simples (livrets, fonds en euros). Il est moins à l'aise avec le fonctionnement des marchés financiers.",
+    "Votre client connaît les principaux supports (fonds, actions, obligations, SCPI) et comprend la relation entre rendement et risque.",
+    "Votre client maîtrise la plupart des produits, y compris non cotés et structurés, et en a une expérience concrète.",
+    "Votre client dispose d'une connaissance approfondie des marchés et des produits complexes, appuyée par une expérience régulière."];
+  const knCard=`<div class="s-card"><h3>Connaissance et expérience</h3>${gauge(KN,["#d7cfe6","#a796c4","#7a63a6","#4e3a7d"],[{i:r.knL,c:"#7a63a6",l:r.kn+" / 22"}])}
+    <div class="s-txt">${KNT[r.knL]}</div><div class="s-lnk">→ Connaissance par produit : ${xp} / ${PRODS.length} · quiz ${r.quiz} / ${QUIZ.length}</div></div>`;
+  // 2. Profil de risque (tolérance + profil retenu)
+  const PT=["Vous souhaitez prendre le minimum de risques afin de réaliser vos projets en toute sécurité. Seuls des supports à capital garanti ou très faiblement volatils sont adaptés.",
+    "Vous acceptez de légères fluctuations en contrepartie d'un rendement un peu supérieur. La sélection privilégie des supports à faible volatilité.",
+    "Vous recherchez un équilibre entre sécurité et performance et acceptez des baisses temporaires modérées de votre capital.",
+    "Vous visez la croissance de votre capital sur le long terme et acceptez des baisses temporaires significatives.",
+    "Vous recherchez la performance maximale sur le long terme et acceptez une forte volatilité de votre capital."];
+  const rkCard=`<div class="s-card"><h3>Profil de risque</h3>${gauge(LV,["#e6f1f5","#bcd8e3","#7fa7b5","#3f7d93","#03475f"],[{i:tolL,c:"#a88918"},{i:r.fin,c:"#03475f"}])}<div class="s-legend"><span style="--m:#a88918">Ressenti du client (tolérance au risque)</span><span style="--m:#03475f">Profil retenu</span></div>
+    <div class="s-txt">${r.fin!=null?PT[r.fin]:"Profil non déterminé : réponses incomplètes."}</div>
+    ${tolL!=null&&r.fin!=null&&tolL!==r.fin?`<div class="s-lnk">Le profil retenu est plus prudent que le ressenti du client : il tient compte de sa situation, de son horizon et de la perte en capital acceptée.</div>`:""}</div>`;
+  // 3. Capacité à subir des pertes
+  const CL=["Très faible","Faible","Moyenne","Élevée","Très élevée"];
+  const capCard=`<div class="s-card"><h3>Situation financière et capacité à subir des pertes</h3>${gauge(CL,["#fff1dc","#ffe0b0","#ffcf80","#ffbc4d","#f5a21e"],[{i:capL,c:"#b8860b",l:r.cap+" / 27"}])}
+    <div class="s-txt">D'après sa situation financière et patrimoniale, votre client dispose d'une capacité à subir des pertes <b>${capL!=null?CL[capL].toLowerCase():"non déterminée"}</b>.${A.Q28?` Perte en capital définitive acceptée : <b>${["aucune","limitée (10 à 20 %)","totale sur une petite partie du patrimoine","au-delà du capital (effet de levier)"][+A.Q28-1]}</b>.`:""}</div></div>`;
+  // 4. Sensibilité extra-financière
+  const app=[["Q30_1","Activités environnementales","Activités reconnues comme vertes (taxonomie européenne)"],["Q30_2","Objectif environnemental et social","Placements poursuivant un objectif environnemental ou social (SFDR)"],["Q30_3","Incidences négatives","Éviter les entreprises les plus nuisibles (principales incidences négatives)"]];
+  const vals=A.Q29==="2"?app.map(a=>+A[a[0]]||0):[0,0,0];
+  const n50=vals.filter(v=>v>=50).length, mx=Math.max(...vals);
+  const esgL=A.Q29==null?null:A.Q29==="1"||mx===0?0:n50>=2?3:n50===1?2:1;
+  const themes=(A.Q30_t||[]).map(i=>PAI[i-1]);
+  const esgCard=`<div class="s-card"><h3>Sensibilité extra-financière</h3>${gauge(["Neutre","Modérée","Significative","Forte"],["#dfeccb","#b4d47a","#6e9a2e","#46661b"],[{i:esgL,c:"#6e8227"}])}
+    ${app.map((a,k)=>`<div class="s-esg"><span class="s-ring">${ring(vals[k])}<i>${vals[k]?vals[k]+" %":"–"}</i></span><span class="s-t"><b>${a[1]}</b><span>${vals[k]?`Au moins ${vals[k]} % de l'investissement`:"Non défini"}</span></span></div>`).join("")}
+    ${themes.length?`<div class="s-txt">Thèmes prioritaires : ${themes.join(", ")}.</div>`:""}</div>`;
+  // 5. Préférences de placement
+  const objs=(A.Q12||[]).map(i=>OBJ[i-1]);
+  const ex=(A.Q16||[]).filter(i=>i!==5).map(i=>EXCL[i-1]);
+  const disp=["Laisser fructifier sans y toucher","Percevoir des revenus réguliers","Pouvoir retirer une partie si besoin","Pouvoir tout récupérer à tout moment"];
+  const prefCard=`<div class="s-card"><h3>Préférences de placement</h3><dl>
+    <dt>Horizon</dt><dd>${A.Q13?OPT13[+A.Q13-1]:"—"}</dd>
+    <dt>Objectifs</dt><dd>${objs.length?objs.join(", "):"—"}</dd>
+    <dt>Disponibilité</dt><dd>${A.Q15?disp[+A.Q15-1]:"—"}</dd>
+    <dt>Exclusions</dt><dd>${ex.length?ex.join(", "):"Tous les objectifs d'investissement peuvent convenir"}</dd>
+    <dt>Part du patrimoine</dt><dd>${A.Q14?["Moins de 10 %","10 à 25 %","25 à 50 %","Plus de 50 %"][+A.Q14-1]:"—"}</dd></dl></div>`;
+  const alerts=r.al.length?`<div class="s-al"><h4>Points de vigilance pour le conseiller</h4><ul style="margin:0;padding-left:4mm">${r.al.map(a=>`<li>${esc(a)}</li>`).join("")}</ul></div>`:`<div class="s-al s-ok"><h4>Aucun point de vigilance</h4>Les réponses sont cohérentes entre elles.</div>`;
+  const today=new Date().toLocaleDateString("fr-FR");
+  return `<style>${SYN_CSS}</style><section class="syn">
+  <div class="s-hd"><div><div class="s-brand">L&amp;E <span>Conseil Finance Patrimoine</span></div><h1>Synthèse du profil investisseur</h1></div>
+  <div class="meta"><b>${esc(ID.prenom)} ${esc(ID.nom)}</b><br>${ID.naissance?"Né(e) le "+esc(ID.naissance)+"<br>":""}Questionnaire du ${esc(opts.date||today)}<br>${opts.revised?`<b style="color:#a88918">Mis à jour le ${today}</b><br>`:""}Conseiller : ${esc(conseiller||"—")}</div></div>
+  <div class="s-hero"><div><div class="s-k">Profil de risque retenu</div><div class="s-p">${r.fin!=null?LV[r.fin]:"Incomplet"}</div></div>
+  <div class="s-d">Le profil retenu est le plus prudent entre la tolérance au risque, la capacité à subir des pertes, l'horizon de placement et la perte en capital acceptée.</div>
+  <div class="s-sri">SRI<b>${r.fin!=null?SRI[r.fin]:"—"}</b></div></div>
+  <div class="s-grid">${knCard}${rkCard}${capCard}${esgCard}${prefCard}<div>${alerts}</div></div>
+  ${opts.comment?`<div class="s-com"><h4>Commentaire du conseiller${opts.revised?" – profil ajusté le "+today:""}</h4>${esc(opts.comment).replace(/\n/g,"<br>")}</div>`:""}
+  <div class="s-note">${opts.revised?"Profil recalculé après échange avec le conseiller, à partir des réponses ajustées du questionnaire.":"Pré-profil établi à partir des déclarations du client. Il sera validé lors d'un entretien avec le conseiller, en tenant compte de l'ensemble de sa situation."}</div>
+  <div class="s-ft"><span>L&amp;E Conseil Finance Patrimoine · R.C.S. Orléans 892 822 388 · ORIAS 21001105 · www.le-conseilpatrimoine.fr</span><span>Synthèse</span></div>
+  </section>`;
+}
+
+</script>
+<script>
+/* ================= CONFIGURATION =================
+   CODE_HASH : empreinte SHA-256 du code d'accès (code actuel : LE2026).
+   WEB3FORMS_KEY : clé d'accès Web3Forms Pro (compte de Guillaume : destinataire principal de chaque questionnaire).
+   EMAILS : adresses des conseillers ; le conseiller choisi par le client est mis en copie (sauf Guillaume, déjà destinataire).
+   COPIE_SYSTEMATIQUE : adresse(s) toujours en copie (séparées par ;).
+   MODELE_PDF : questionnaire PDF remplissable déposé à côté de cette page sur le site.
+   TEST_MODE : true affiche le bandeau "Version de test" et ajoute [TEST] à l'objet. Mettre false pour la mise en ligne. */
+const CODE_HASH="70143c504a1f5a23f16fa517e7571b4290c31cf148e77fe06fdf16df5e357fed";
+const WEB3FORMS_KEY="9ae5d7aa-2d33-49c1-a546-1971ff0a70e0";
+const EMAILS={Etienne:"etienne.valdeyron@le-conseilpatrimoine.fr",Benjamin:"Benjamin.BOTTON@le-conseilpatrimoine.fr",Guillaume:"Guillaume.Boutin@le-conseilpatrimoine.fr"};
+const COPIE_SYSTEMATIQUE="Laure.Imbert@le-conseilpatrimoine.fr";
+const MODELE_PDF="profil-investisseur-modele.pdf";
+const TEST_MODE=false;
+/* ================================================= */
+const ADVISORS=[["Etienne","Valdeyron","EV"],["Benjamin","Botton","BB"],["Guillaume","Boutin","GB"]];
+const LV=["Sécuritaire","Prudent","Équilibré","Dynamique","Offensif"];
+const LVC=["var(--p1)","var(--p2)","var(--p3)","var(--p4)","var(--p5)"];
+const SRI=["1 – 2","2 – 3","3 – 4","4 – 5","5 – 7"];
+const PRODS=["Livrets, fonds en euros","Fonds (OPCVM, SICAV, ETF) / unités de compte","Actions en direct (PEA, compte-titres)","Obligations","Immobilier « papier » (SCPI, OPCI)","Non coté / private equity (FCPR, FCPI, FIP)","Produits structurés","Produits à effet de levier, dérivés"];
+const QUIZ=[["Sur un fonds en euros, le capital est garanti par l'assureur.","V"],["Pour espérer un rendement plus élevé, il faut accepter un risque de perte plus important.","V"],["Une obligation est toujours intégralement remboursée.","F"],["Répartir son argent sur plusieurs placements permet de réduire le risque.","V"],["Dans une assurance-vie, l'argent est bloqué pendant 8 ans.","F"],["Le capital investi en SCPI est garanti.","F"],["On peut revendre ses parts de FCPI ou de FIP à tout moment, sans contrainte.","F"],["Un produit structuré peut entraîner une perte en capital.","V"],["Un ETF (tracker) cherche à reproduire l'évolution d'un indice boursier.","V"],["Avec un PER, l'épargne est en principe bloquée jusqu'à la retraite.","V"],["Quand les taux d\'intérêt montent, la valeur des obligations déjà émises a tendance à baisser.","V"],["Un produit structuré avec une protection du capital jusqu\'à – 40 % garantit de récupérer au moins 60 % de sa mise à l\'échéance.","F"]];
+const OBJ=["Sécuriser une épargne disponible","Compléter mes revenus","Faire fructifier mon capital","Préparer ma retraite","Transmettre à mes proches","Réduire ma fiscalité","Préparer la cession de mon entreprise","Investir dans l'économie réelle","Financer un projet"];
+const EXCL=["Immobilier (SCPI, OPCI…)","Entreprises non cotées","Produits structurés","Effet de levier","Aucun, tout est envisageable"];
+const PAI=["Climat","Biodiversité","Eau et pollution","Déchets dangereux","Efficacité énergétique des bâtiments","Droits humains (OCDE / ONU)","Égalité femmes-hommes","Exclusion des armes controversées"];
+const R=(id,t,o,x={})=>({id,t,o,type:"r",...x}), M=(id,t,o,x={})=>({id,t,o,type:"m",...x});
+
+const STEPS=[
+ {k:"Étape 1",title:"Votre situation",sub:"Pour mesurer objectivement votre capacité à faire face à une baisse ou à une perte.",qs:[
+  R("Q01","Votre âge",["Moins de 35 ans","35 à 49 ans","50 à 64 ans","65 à 74 ans","75 ans et plus"]),
+  R("Q02","Dans les années à venir, vos revenus devraient…",["Augmenter","Rester stables","Baisser ou être irréguliers","Je ne sais pas"]),
+  R("Q03","Revenus nets annuels de votre foyer",["Moins de 30 000 €","30 000 à 60 000 €","60 000 à 120 000 €","120 000 à 250 000 €","Plus de 250 000 €","Je préfère ne pas répondre"]),
+  R("Q04","Combien épargnez-vous chaque mois, à titre personnel ou via votre société ?",["Je n'épargne pas","Moins de 500 €","500 à 2 000 €","Plus de 2 000 €","Non concerné : je suis retraité(e), je vis de mes revenus et placements"]),
+  R("Q05","Votre patrimoine financier",["Moins de 50 000 €","50 000 à 200 000 €","200 000 à 500 000 €","500 000 € à 1 M€","Plus de 1 M€","Je préfère ne pas répondre"],{hint:"Livrets, assurance-vie, PEA, comptes-titres, PER… (hors biens professionnels)"}),
+  R("Q06","Votre patrimoine immobilier, crédits déduits",["Aucun","Moins de 300 000 €","300 000 € à 1 M€","Plus de 1 M€","Je préfère ne pas répondre"]),
+  R("Q07","Part de vos revenus consacrée au remboursement de crédits",["Aucun crédit","Moins de 20 %","20 à 35 %","Plus de 35 %"]),
+  R("Q08","En dehors de la somme que vous souhaitez placer, de combien d'épargne disponible disposez-vous en cas d'imprévu ?",["Moins de 3 mois de dépenses","3 à 6 mois","6 à 12 mois","Plus de 12 mois"],{hint:"Livrets, comptes courants… mobilisables immédiatement"}),
+  {id:"Q09",type:"extra"},
+  R("Q11","Votre statut",["Dirigeant","Salarié","Indépendant / libéral","Retraité","Autre"])]},
+ {k:"Étape 2",title:"Vos projets",sub:"Pour orienter les solutions vers ce qui compte vraiment pour vous.",qs:[
+  M("Q12","Vos objectifs pour ce placement",OBJ,{hint:"2 réponses maximum",max:2}),
+  R("Q13","Pour l'essentiel de la somme placée, dans combien de temps pensez-vous en avoir besoin ?",["Moins de 2 ans","2 à 3 ans","3 à 5 ans","5 à 8 ans","Plus de 8 ans"]),
+  R("Q14","Quelle part de votre patrimoine total représente ce placement ?",["Moins de 10 %","10 à 25 %","25 à 50 %","Plus de 50 %"]),
+  R("Q15","Pendant la durée du placement, vous souhaitez…",["Laisser fructifier sans y toucher","Percevoir des revenus réguliers","Pouvoir retirer une partie si besoin","Pouvoir tout récupérer à tout moment"]),
+  M("Q16","Y a-t-il des placements que vous refusez ?",EXCL,{hint:"Plusieurs réponses possibles",opt:true})]},
+ {k:"Étape 3",title:"Vos connaissances",sub:"Pour vous proposer uniquement des solutions que vous comprenez.",qs:[
+  {id:"Q17",type:"grid",t:"Votre expérience des placements",hint:"Une réponse par ligne",rows:PRODS,o:["Je ne connais pas","Je connais","J'en ai déjà détenu","J'en fais régulièrement"]},
+  M("Q18","Comment gérez-vous vos placements aujourd'hui ?",["Seul(e)","Avec un conseiller","En gestion sous mandat","Je n'ai pas encore de placements"],{hint:"Plusieurs réponses possibles"}),
+  R("Q19","Avez-vous déjà subi une perte sur un placement ?",["Non, jamais","Oui, et j'ai tout vendu","Oui, et j'ai patienté","Oui, et j'en ai profité pour racheter"]),
+  R("Q20","Avez-vous exercé au moins un an une profession dans la finance (CIF, gérant, DAF, banquier…) ?",["Oui","Non"])]},
+ {k:"Quiz",title:"Vrai ou faux ?",sub:"12 affirmations, 3 minutes. Les deux dernières sont plus techniques : répondez « ? » si vous n'êtes pas sûr(e).",qs:[
+  {id:"Q21",type:"quiz",t:"Pour chaque affirmation, choisissez votre réponse"}]},
+ {k:"Étape 4",title:"Votre rapport au risque",sub:"Quelques mises en situation : répondez spontanément, il s'agit de votre ressenti.",intro:"duo",qs:[
+  R("Q22","Pour vous, placer son argent, c'est avant tout…",["Ne rien perdre","Gagner un peu plus qu'un livret, sans à-coups","Trouver un juste équilibre entre sécurité et rendement","Faire croître mon capital, quitte à traverser des baisses","Viser la meilleure performance possible"]),
+  R("Q23","Vous placez 10 000 € pour un an. Voici la valeur la plus basse et la plus haute que pourraient atteindre 5 placements au bout d'un an. Lequel choisissez-vous ?",["Placement A","Placement B","Placement C","Placement D","Placement E"],{chart:true}),
+  R("Q24","Vous avez placé la moitié de votre épargne. Trois mois plus tard, sa valeur a baissé de 20 %. Que faites-vous ?",["Je vends tout pour arrêter les frais","J'en vends une partie","Je ne touche à rien et j'attends","J'en rachète : c'est le moment !"]),
+  R("Q25","À partir de quelle baisse temporaire sur un an commencez-vous à vraiment vous inquiéter ?",["Dès la moindre baisse","– 5 %","– 10 %","– 20 %","Au-delà de – 20 %"]),
+  R("Q26","Après une forte baisse, combien de temps êtes-vous prêt(e) à attendre pour retrouver votre mise ?",["Moins de 6 mois","6 mois à 1 an","1 à 2 ans","2 à 4 ans","Plus de 4 ans"]),
+  R("Q27","Vous gagnez à un jeu. Quelle option choisissez-vous ?",["1 000 € tout de suite, garantis","1 chance sur 2 de gagner 2 000 €, sinon 500 €","1 chance sur 4 de gagner 6 000 €, sinon rien"]),
+  R("Q28","Et la perte en capital, définitive cette fois : quelle perte pourriez-vous supporter sur la somme investie ?",["Aucune : je dois retrouver au minimum le capital investi","Une perte limitée, de l'ordre de 10 à 20 % du capital investi","La perte de tout le capital investi sur certains placements, s'ils ne représentent qu'une petite partie de mon patrimoine","Une perte pouvant dépasser le capital investi (effet de levier)"],{hint:"À ne pas confondre avec la baisse temporaire des questions précédentes"})]},
+ {k:"Étape 5",title:"Vos valeurs",sub:"Souhaitez-vous que vos placements tiennent compte de critères environnementaux, sociaux ou de gouvernance ?",qs:[
+  R("Q29","Vos préférences en matière de durabilité",["Non, je n'ai pas de préférence particulière","Oui, je souhaite les préciser"]),
+  {id:"Q30",type:"esg",t:"Quelle part de votre placement souhaitez-vous consacrer à chacun de ces engagements ?",hint:"Choisissez uniquement les lignes qui vous intéressent, laissez les autres vides.",when:()=>A.Q29==="2"}]}
+];
+const PTS={Q01:[3,3,2,1,0],Q02:[3,2,0,1],Q03:[0,1,2,3,3,null],Q04:[0,1,2,3,null],Q05:[0,1,2,3,3,null],Q06:[0,1,2,3,null],Q07:[3,2,1,0],Q08:[0,1,2,3],Q14:[3,2,1,0],
+ Q22:[0,1,2,3,4],Q23:[0,1,2,3,4],Q24:[0,1,3,4],Q25:[0,1,2,3,4],Q26:[0,1,2,3,4],Q27:[0,2,4]};
+const CAPQ=["Q01","Q02","Q03","Q04","Q05","Q06","Q07","Q08","Q14"],TOLQ=["Q22","Q23","Q24","Q25","Q26","Q27"];
+const OPT13=["Moins de 2 ans","2 à 3 ans","3 à 5 ans","5 à 8 ans","Plus de 8 ans"];
+const KNL=["Débutant","Informé","Averti","Expérimenté"];
+
+let A={}, ID={prenom:"",nom:"",email:"",tel:"",naissance:""}, view="gate", step=0, advisor=null, consent=false, missing=[], sendErr="", lastResult=null;
+
+// ---------- calcul (règles identiques à la grille conseiller) ----------
+function analyse(Ans){
+  const pts=id=>Ans[id]?PTS[id][+Ans[id]-1]:null;
+  const sum=ids=>{let s=0,n=0;ids.forEach(i=>{const p=pts(i);if(p!=null){s+=p;n++}});return{s,n}};
+  const band=(s,c)=>c.findIndex(x=>s<=x);
+  const tol=sum(TOLQ);
+  // capacité : réponses « ne souhaite pas répondre / non concerné » neutralisées, score ramené sur 27
+  const big=Ans.Q05==="4"||Ans.Q05==="5";
+  let cs=0,cn=0;CAPQ.forEach(i=>{let p=pts(i);if(p==null)return;if(i==="Q14"&&big)p=Math.max(p,2);cs+=p;cn++});
+  const cap={s:cn?Math.round(cs/(cn*3)*27):0,n:cn};
+  const tolL=tol.n?band(tol.s,[4,9,14,19,24]):null;
+  let capL=cap.n?Math.max(1,band(cap.s,[-1,7,12,19,27])):null; if(Ans.Q08==="1"&&capL!=null)capL=Math.max(0,capL-1);
+  const horL=Ans.Q13?[1,1,2,3,4][+Ans.Q13-1]:null, lossL=Ans.Q28?(Ans.Q28==="1"?1:4):null;
+  const axes=[["Tolérance au risque",tolL,tol.s+" / 24"],["Capacité à subir des pertes",capL,cap.s+" / 27"],["Horizon",horL,Ans.Q13?OPT13[+Ans.Q13-1]:"—"],["Perte en capital",lossL,Ans.Q28?(Ans.Q28==="1"?"Aucune acceptée":["","Limitée","Totale (petite poche)","Au-delà (levier)"][+Ans.Q28-1]):"—"]];
+  const ks=axes.map(a=>a[1]).filter(l=>l!=null), fin=ks.length?Math.min(...ks):null;
+  let quiz=0;QUIZ.forEach((q,i)=>{if(Ans["Q21_"+String(i+1).padStart(2,"0")]===q[1])quiz++});
+  let xp=0;PRODS.forEach((_,i)=>{const v=Ans["Q17_"+(i+1)];if(v==="3"||v==="4")xp++});
+  const kn=quiz+xp+((Ans.Q19==="3"||Ans.Q19==="4")?1:0)+(Ans.Q20==="1"?1:0), knL=band(kn,[6,12,17,22]);
+  const al=[];
+  if(Ans.Q08==="1")al.push("Épargne de précaution inférieure à 3 mois : capacité abaissée d'un niveau, à vérifier.");
+  if(Ans.Q28==="1")al.push("Aucune perte en capital acceptée : profil plafonné à Prudent, supports garantis à privilégier – à valider en rendez-vous.");
+  if(Ans.Q03==="6"||Ans.Q05==="6"||Ans.Q06==="5")al.push("Revenus ou patrimoine non communiqués : à compléter en rendez-vous.");
+  if(Ans.Q15==="4")al.push("Disponibilité totale exigée : exclure SCPI, non coté, structurés.");
+  if(Ans.Q07==="4")al.push("Taux d'effort supérieur à 35 %.");
+  if(Ans.Q02==="3")al.push("Revenus susceptibles de baisser ou irréguliers.");
+  if(Ans.Q28==="1"&&tolL!=null&&tolL>=2)al.push("Alerte AMF : tolérant aux fluctuations mais refuse toute perte en capital (confusion volatilité / perte).");
+  if(Ans.Q23&&Ans.Q25&&Math.abs(+Ans.Q23-+Ans.Q25)>=2)al.push("Incohérence entre le placement choisi (Q23) et le seuil d'inquiétude (Q25).");
+  if(tolL!=null&&capL!=null&&Math.abs(tolL-capL)>=2)al.push(`Écart tolérance (${LV[tolL]}) / capacité (${LV[capL]}) à creuser.`);
+  const yr=parseInt(Ans.Q10,10),now=new Date().getFullYear();
+  if(Ans.Q10_deja||Ans.Q11==="4")al.push("Client retraité : vigilance liquidité et transmission.");else if(yr&&yr>=now&&yr-now<5)al.push(`Retraite dans moins de 5 ans (${yr}).`);
+  if(Ans.Q01==="5")al.push("75 ans et plus : vigilance horizon et transmission.");
+  if(Ans.Q13==="1"||Ans.Q13==="2")al.push("Horizon inférieur à 3 ans : profil plafonné à Prudent.");
+  return{axes,fin,tol:tol.s,cap:cap.s,quiz,kn,knL,al};
+}
+
+// ---------- rendu ----------
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+function prog(cur){const n=STEPS.length+2;return `<div class="prog" aria-label="Progression">${Array.from({length:n},(_,i)=>`<i class="${i<cur?"done":i===cur?"on":""}"></i>`).join("")}</div>`}
+function optBtn(id,v,label,sel,multi){return `<button type="button" class="opt ${multi?"multi":""} ${sel?"sel":""}" data-id="${id}" data-v="${v}" ${multi?'data-m="1"':""}>${esc(label)}</button>`}
+function chart(){
+  const P=[["A",9900,10400],["B",9500,11000],["C",9000,11700],["D",8200,12600],["E",7000,14000]],W=640,H=200,x0=70,mid=108,sc=.019;
+  let s=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Valeur basse et haute de 5 placements"><line x1="${x0}" y1="${mid}" x2="${W-10}" y2="${mid}" stroke="var(--grey)" stroke-width="1.5"/><text x="${x0-8}" y="${mid+4}" text-anchor="end" font-size="12" fill="var(--blue)" font-family="Barlow">10 000 €</text>`;
+  const f=v=>v.toLocaleString("fr-FR").replace(/ | /g," ");
+  P.forEach(([l,lo,hi],i)=>{const cx=x0+40+i*112,up=(hi-10000)*sc,dn=(10000-lo)*sc;
+    s+=`<rect x="${cx}" y="${mid-up}" width="44" height="${up}" rx="3" fill="var(--green)"/><rect x="${cx}" y="${mid}" width="44" height="${dn}" rx="3" fill="var(--gold)"/>`+
+    `<text x="${cx+22}" y="${mid-up-6}" text-anchor="middle" font-size="12" font-weight="600" fill="var(--green)" font-family="Barlow">${f(hi)} €</text>`+
+    `<text x="${cx+22}" y="${mid+dn+15}" text-anchor="middle" font-size="12" font-weight="600" fill="var(--gold)" font-family="Barlow">${f(lo)} €</text>`+
+    `<circle cx="${cx+72}" cy="${mid}" r="12" fill="var(--blue)"/><text x="${cx+72}" y="${mid+5}" text-anchor="middle" font-size="14" fill="var(--surface)" font-family="DM Serif Display">${l}</text>`});
+  return `<div class="chart">${s}</svg></div>`;
+}
+function qHTML(q,n){
+  const miss=missing.includes(q.id)?"miss":"";
+  if(q.type==="extra")return `<div class="q ${miss}"><div class="qt"><span class="qn">+</span><span>Quelques précisions (facultatif)</span></div>
+    <div class="inl">Personnes à charge <input class="txt" data-t="Q09" inputmode="numeric" value="${esc(A.Q09||"")}"> Année de départ en retraite <input class="txt" data-t="Q10" inputmode="numeric" value="${esc(A.Q10||"")}"> ${optBtn("Q10_deja",1,"Déjà retraité(e)",A.Q10_deja,true)}</div></div>`;
+  const head=`<div class="qt"><span class="qn">${n}</span><span>${esc(q.t)}</span></div>${q.hint?`<div class="hint">${esc(q.hint)}</div>`:""}`;
+  if(q.type==="grid")return `<div class="q ${miss}">${head}<div class="rows">${q.rows.map((r,i)=>{const id="Q17_"+(i+1);return `<div class="row"><span>${esc(r)}</span><div class="opts">${q.o.map((o,j)=>optBtn(id,String(j+1),o,A[id]===String(j+1))).join("")}</div></div>`}).join("")}</div></div>`;
+  if(q.type==="quiz")return `<div class="q ${miss}">${head}<div class="rows">${QUIZ.map((x,i)=>{const id="Q21_"+String(i+1).padStart(2,"0");return `<div class="row"><span><b style="color:var(--gold)">${i+1}.</b> ${esc(x[0])}</span><div class="opts">${[["V","Vrai"],["F","Faux"],["NSP","?"]].map(([v,l])=>optBtn(id,v,l,A[id]===v)).join("")}</div></div>`}).join("")}</div></div>`;
+  if(q.type==="esg")return `<div class="q">${head}<div class="rows">${[["Q30_1","Financer des activités reconnues comme vertes par l'Union européenne","Critère officiel : taxonomie européenne"],["Q30_2","Choisir des placements qui ont un objectif environnemental ou social","Critère officiel : investissement durable (SFDR)"],["Q30_3","Éviter les entreprises les plus nuisibles (climat, pollution, droits humains…)","Critère officiel : principales incidences négatives"]].map(([id,l,o])=>`<div class="row"><span>${l}<br><small class="muted">${o}</small></span><div class="opts">${[["5","Une petite part (5 %)"],["25","Un quart (25 %)"],["50","La moitié ou plus"]].map(([v,t])=>optBtn(id,v,t,A[id]===v)).join("")}</div></div>`).join("")}</div>
+    <div class="hint" style="margin-top:12px">Thèmes qui vous tiennent à cœur</div><div class="opts">${PAI.map((p,i)=>optBtn("Q30_t",i+1,p,A.Q30_t&&A.Q30_t.includes(i+1),true)).join("")}</div></div>`;
+  const multi=q.type==="m";
+  return `<div class="q ${miss}">${head}${q.chart?chart():""}<div class="opts">${q.o.map((o,i)=>optBtn(q.id,multi?i+1:String(i+1),o,multi?(A[q.id]||[]).includes(i+1):A[q.id]===String(i+1),multi)).join("")}</div>${q.id==="Q28"&&A.Q28==="1"&&(+A.Q22>=4||+A.Q23>=4)?`<div class="warnq"><b>Êtes-vous sûr(e) ?</b> Vous avez indiqué rechercher la croissance ou la performance, mais n'accepter <b>aucune</b> perte en capital. Une baisse temporaire (volatilité) n'est pas une perte définitive : la perte n'existe que si l'on vend en baisse ou si l'émetteur fait défaut. Si vous acceptez une perte limitée sur une partie de votre placement, choisissez la 2e réponse.</div>`:""}</div>`;
+}
+function requiredOf(s){const ids=[];s.qs.forEach(q=>{
+  if(q.type==="r")ids.push(q.id);
+  else if(q.type==="m"&&!q.opt&&q.id==="Q12")ids.push("Q12");
+  else if(q.type==="grid")PRODS.forEach((_,i)=>ids.push("Q17_"+(i+1)));
+  else if(q.type==="quiz")QUIZ.forEach((_,i)=>ids.push("Q21_"+String(i+1).padStart(2,"0")));});
+  return ids;}
+const isEmpty=id=>{const v=A[id];return v==null||v===""||(Array.isArray(v)&&!v.length)};
+
+function render(){
+  const app=$("#app");
+  $("#testbar").innerHTML=TEST_MODE?'<div class="testbar">Version de test – ne pas diffuser</div>':"";
+  if(view==="gate"){app.innerHTML=`<div class="gate"><div class="kick">Espace réservé à nos clients</div><h2 style="margin-top:6px">Questionnaire profil investisseur</h2>
+    <p class="muted" style="margin:8px 0 0">Saisissez le code d'accès communiqué par votre conseiller.</p>
+    <input class="txt" id="code_in" autocomplete="off" aria-label="Code d'accès">${sendErr?`<div class="err">${esc(sendErr)}</div>`:""}
+    <div style="margin-top:14px"><button class="btn primary" id="gatebtn" type="button">Accéder au questionnaire</button></div></div>`;
+    setTimeout(()=>{const i=$("#code_in");i&&i.focus()},0);return}
+  if(view==="intro"){app.innerHTML=`<section class="hero"><div class="kick" style="color:var(--gold)">Questionnaire 2026</div><h1>Quel investisseur<br>êtes-vous ?</h1><p class="lead">5 étapes, une quinzaine de minutes. Vos réponses sont transmises directement à votre conseiller pour préparer notre prochain échange.</p></section>
+    <div class="steps5">${["Votre situation","Vos projets","Vos connaissances","Votre rapport au risque","Vos valeurs"].map((s,i)=>`<div><b>${i+1}</b>${s}</div>`).join("")}</div>
+    <div class="q"><div class="qt"><span class="qn">✓</span><span>Faisons connaissance</span></div><div class="fields" style="margin-top:12px">
+      ${[["prenom","Prénom","given-name"],["nom","Nom","family-name"],["email","E-mail","email"],["tel","Téléphone","tel"],["naissance","Date de naissance","bday"]].map(([k,l,ac])=>`<div><label for="id_${k}">${l}</label><input class="txt" id="id_${k}" data-idf="${k}" autocomplete="${ac}" value="${esc(ID[k])}"></div>`).join("")}
+    </div>${sendErr?`<div class="err">${esc(sendErr)}</div>`:""}</div>
+    <div class="nav"><span></span><button class="btn primary" id="start" type="button">Commencer</button></div>`;return}
+  if(view==="step"){const s=STEPS[step];let n=STEPS.slice(0,step).reduce((a,x)=>a+x.qs.filter(q=>q.type!=="extra").length,0);
+    const big=s.k.startsWith("Étape")?s.k.slice(-1):"?";
+    app.innerHTML=prog(step+1)+`<div class="stephead"><div class="badge">${big}</div><div><div class="kick">${s.k}</div><h2>${s.title}</h2></div></div><p class="sub">${s.sub}</p>`+
+     (s.intro==="duo"?`<div class="duo"><div><b>La volatilité</b>Une baisse temporaire de la valeur de votre placement. Si vous ne vendez pas, elle peut se résorber avec le temps.</div><div class="r"><b>La perte en capital</b>Une perte définitive : la somme récupérée au final est inférieure à celle investie.</div></div>`:"")+
+     s.qs.filter(q=>!q.when||q.when()).map(q=>qHTML(q,q.type==="extra"?"":++n)).join("")+
+     `${missing.length?`<div class="err">Il reste ${missing.length} réponse(s) à compléter, signalée(s) en orange.</div>`:""}<div class="nav"><button class="btn" id="prev" type="button">Retour</button><button class="btn primary" id="next" type="button">${step===STEPS.length-1?"Dernière étape":"Suivant"}</button></div>`;return}
+  if(view==="advisor"){app.innerHTML=prog(STEPS.length+1)+`<div class="stephead"><div class="badge">✓</div><div><div class="kick">Dernière étape</div><h2>Qui est votre conseiller ?</h2></div></div><p class="sub">Votre questionnaire lui sera transmis directement.</p>
+    <div class="advs">${ADVISORS.map((a,i)=>`<button type="button" class="adv ${advisor===i?"sel":""}" data-adv="${i}"><div class="av">${a[2]}</div><b>${a[0]}</b><span class="muted">${a[1]}</span></button>`).join("")}</div>
+    <label class="consent"><input type="checkbox" id="consent" ${consent?"checked":""}><span>Je certifie l'exactitude des informations fournies et j'accepte qu'elles soient transmises à L&amp;E Conseil Finance Patrimoine pour l'analyse de mon profil, conformément à la réglementation sur la protection des données (RGPD). Je m'engage à signaler tout changement de situation.</span></label>
+    ${sendErr?`<div class="err">${esc(sendErr)}</div>`:""}
+    <div class="nav"><button class="btn" id="prev" type="button">Retour</button><button class="btn gold" id="send" type="button" ${advisor==null||!consent?"disabled":""}>Envoyer mon questionnaire</button></div>`;return}
+  if(view==="done"){const r=lastResult.r,a=ADVISORS[advisor];
+    app.innerHTML=`<section class="res"><div class="kick">${lastResult.sent?"Questionnaire transmis à "+a[0]+" "+a[1]:"Votre pré-profil"}</div>
+    <div class="muted" style="margin-top:6px">Votre pré-profil d'investisseur</div><div class="pn" style="color:${r.fin!=null?LVC[r.fin]:"var(--muted)"}">${r.fin!=null?LV[r.fin]:"—"}</div>
+    <div class="scale">${LV.map((l,i)=>`<div class="lv ${i===r.fin?"on":""}" style="--c:${LVC[i]}"><b>${i+1}</b>${l}</div>`).join("")}</div>
+    <p>${lastResult.sent?`Merci ${esc(ID.prenom)} ! ${a[0]} a bien reçu vos réponses et reviendra vers vous pour en parler.`:`L'envoi n'a pas abouti. Vérifiez votre connexion et réessayez, ou transmettez vos réponses par e-mail ci-dessous.<br><button class="btn gold" id="retry" type="button" style="margin-top:10px">Réessayer l'envoi</button>`}</p>
+    <p class="note">Ce résultat est indicatif. Votre profil définitif sera validé avec votre conseiller, en tenant compte de l'ensemble de votre situation.</p>
+    ${lastResult.sent?"":`<div class="copybox"><b>Pour transmettre vos réponses</b>, copiez le texte ci-dessous et envoyez-le par e-mail à ${a[0]} ${a[1]}.<textarea id="code" readonly>${esc(lastResult.code)}</textarea><div class="nav" style="margin-top:8px"><span class="muted" id="cpm"></span><button class="btn" id="cp" type="button">Copier</button></div></div>`}
+    </section>`;return}
+}
+
+// ---------- interactions ----------
+document.addEventListener("click",e=>{
+  const o=e.target.closest(".opt");
+  if(o){const id=o.dataset.id,v=o.dataset.v;
+    if(id==="Q10_deja")A.Q10_deja=!A.Q10_deja;
+    else if(o.dataset.m){const arr=A[id]||[],x=+v;const q=STEPS.flatMap(s=>s.qs).find(q=>q.id===id);
+      A[id]=arr.includes(x)?arr.filter(y=>y!==x):(q&&q.max&&arr.length>=q.max?arr:[...arr,x]);
+      if(id==="Q16"){if(x===5&&A[id].includes(5))A[id]=[5];else A[id]=A[id].filter(y=>y!==5||x===5)}}
+    else A[id]=A[id]===v?undefined:v;
+    if(missing.includes(id)&&!isEmpty(id))missing=missing.filter(m=>m!==id);
+    keepScroll(render);return}
+  const t=e.target.closest("button");if(!t)return;
+  if(t.id==="start"){if(!ID.prenom.trim()||!ID.nom.trim()){sendErr="Merci d'indiquer au moins votre prénom et votre nom.";render();return}sendErr="";view="step";step=0;go()}
+  else if(t.id==="next"){missing=requiredOf(STEPS[step]).filter(isEmpty);if(missing.length){render();const m=document.querySelector(".q.miss");m&&m.scrollIntoView({behavior:"smooth",block:"center"});return}
+    if(step<STEPS.length-1){step++;}else view="advisor";go()}
+  else if(t.id==="prev"){missing=[];if(view==="advisor"){view="step";step=STEPS.length-1}else if(step>0)step--;else view="intro";go()}
+  else if(t.dataset.adv!=null){advisor=+t.dataset.adv;render()}
+  else if(t.id==="send")send();
+  else if(t.id==="cp"){const ta=$("#code");navigator.clipboard.writeText(ta.value).then(()=>$("#cpm").textContent="Copié.").catch(()=>{ta.select();$("#cpm").textContent="Sélectionné : faites Ctrl+C."})}
+  else if(t.id==="gatebtn")checkCode();
+  else if(t.id==="retry")send();
+});
+document.addEventListener("input",e=>{if(e.target.dataset.idf)ID[e.target.dataset.idf]=e.target.value;if(e.target.dataset.t)A[e.target.dataset.t]=e.target.value});
+document.addEventListener("keydown",e=>{if(e.key==="Enter"&&e.target.id==="code_in")checkCode()});
+async function sha256(s){const b=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(s));return[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,"0")).join("")}
+let tries=0;
+async function checkCode(){const v=($("#code_in").value||"").trim().toUpperCase();if(!v)return;
+  if(++tries>8){sendErr="Trop d'essais. Rechargez la page ou contactez votre conseiller.";render();return}
+  let ok=false;try{ok=(await sha256(v))===CODE_HASH}catch(_){sendErr="Votre navigateur ne permet pas de vérifier le code. Essayez avec un navigateur récent.";render();return}
+  if(ok){sendErr="";view="intro";go()}else{sendErr="Code incorrect. Vérifiez le code transmis par votre conseiller.";render()}}
+document.addEventListener("change",e=>{if(e.target.id==="consent"){consent=e.target.checked;render()}});
+function go(){render();window.scrollTo({top:0,behavior:"smooth"})}
+function keepScroll(fn){const y=window.scrollY;fn();window.scrollTo(0,y)}
+
+// ---------- envoi ----------
+function payload(){const r=analyse(A);return{
+  prenom:ID.prenom.trim(),nom:ID.nom.trim(),email:ID.email.trim(),tel:ID.tel.trim(),naissance:ID.naissance.trim(),
+  conseiller:ADVISORS[advisor][0],answers:JSON.parse(JSON.stringify(A)),profil:r.fin,profilLabel:r.fin!=null?LV[r.fin]:null,
+  tol:r.tol,cap:r.cap,kn:r.kn,alertes:r.al.length,submittedAt:new Date().toISOString()}}
+function ansLabel(q,id){const v=A[id];if(v==null||v===""||(Array.isArray(v)&&!v.length))return "—";
+  if(q.type==="m")return v.map(i=>q.o[i-1]).join(", ");return q.o[+v-1]||v}
+function emailBody(p,r){const L=[`PRÉ-PROFIL : ${p.profilLabel||"incomplet"}`];
+  STEPS.forEach(s=>{L.push("",`— ${s.title} —`);s.qs.forEach(q=>{
+    if(q.type==="extra")L.push(`Personnes à charge : ${A.Q09||"—"} · Retraite : ${A.Q10_deja?"déjà retraité(e)":(A.Q10||"—")}`);
+    else if(q.type==="grid")PRODS.forEach((pr,i)=>L.push(`${pr} : ${q.o[+A["Q17_"+(i+1)]-1]||"—"}`));
+    else if(q.type==="quiz")QUIZ.forEach((x,i)=>L.push(`Quiz ${i+1} : ${A["Q21_"+String(i+1).padStart(2,"0")]||"—"}`));
+    else if(q.type==="esg"){if(A.Q29==="2")[["Q30_1","Taxonomie"],["Q30_2","SFDR"],["Q30_3","PAI"]].forEach(([k,l])=>L.push(`${l} : ${A[k]?"≥ "+A[k]+" %":"—"}`))}
+    else L.push(`${q.t} : ${ansLabel(q,q.id)}`)})});
+  return L.join("\n");}
+const STATUT=["Dirigeant","Salarié","Indépendant / libéral","Retraité","Autre"];
+async function buildPdf(p){
+  const L=window.PDFLib; if(!L||!window.html2canvas)throw new Error("libs");
+  const tpl=await fetch(MODELE_PDF).then(r=>{if(!r.ok)throw new Error("modele");return r.arrayBuffer()});
+  const doc=await L.PDFDocument.load(tpl), form=doc.getForm(), today=new Date().toLocaleDateString("fr-FR");
+  const T={NOM:p.nom.toUpperCase(),PRENOM:p.prenom,NAISSANCE:p.naissance,EMAIL:p.email,PROFESSION:A.Q11?STATUT[+A.Q11-1]:"",DATE:today,FAIT_A:"Questionnaire en ligne",LE:today,Q09:A.Q09||"",Q10:A.Q10||""};
+  for(const fld of form.getFields()){const n=fld.getName();
+    try{
+      if(fld instanceof L.PDFTextField){if(T[n]!=null)fld.setText(String(T[n]))}
+      else if(fld instanceof L.PDFRadioGroup){if(A[n]!=null&&A[n]!=="")fld.select(String(A[n]))}
+      else if(fld instanceof L.PDFCheckBox){let on=false;const m=n.match(/^(Q12|Q16|Q18)_(\d+)$/),t=n.match(/^Q30_t(\d+)$/);
+        if(m)on=(A[m[1]]||[]).includes(+m[2]);else if(t)on=(A.Q30_t||[]).includes(+t[1]);else if(n==="Q10_deja")on=!!A.Q10_deja;
+        if(on)fld.check()}
+    }catch(_){}}
+  const helv=await doc.embedFont(L.StandardFonts.Helvetica);form.updateFieldAppearances(helv);
+  // page de synthèse
+  const box=document.createElement("div");box.style.cssText="position:fixed;left:-10000px;top:0;width:210mm;background:#fff";
+  box.innerHTML=synthHTML(A,{prenom:p.prenom,nom:p.nom,naissance:p.naissance},ADVISORS[advisor][0]+" "+ADVISORS[advisor][1]);
+  document.body.appendChild(box);
+  try{await document.fonts.ready;
+    const cv=await html2canvas(box.querySelector(".syn"),{scale:2,backgroundColor:"#ffffff",logging:false});
+    const jpg=await doc.embedJpg(cv.toDataURL("image/jpeg",.88));
+    const pg=doc.addPage([595.28,841.89]);pg.drawImage(jpg,{x:0,y:0,width:595.28,height:841.89});
+  }finally{box.remove()}
+  doc.setTitle(`Profil investisseur – ${p.prenom} ${p.nom}`);doc.setAuthor("L&E Conseil Finance Patrimoine");
+  doc.setSubject("LE-PROFIL:"+btoa(unescape(encodeURIComponent(JSON.stringify({prenom:p.prenom,nom:p.nom,email:p.email,tel:p.tel,naissance:p.naissance,conseiller:ADVISORS[advisor][0]+" "+ADVISORS[advisor][1],profil:analyse(A).fin,date:new Date().toLocaleDateString("fr-FR")})))));
+  return new Blob([await doc.save()],{type:"application/pdf"});
+}
+async function send(){
+  const p=payload(),r=analyse(A),btn=$("#send")||$("#retry");if(btn){btn.disabled=true;btn.textContent="Préparation du document…"}sendErr="";
+  const adv=ADVISORS[advisor][0];let sent=false,pdfOk=false;
+  if(($("#botcheck").value||"")!==""){sent=true}
+  else{
+    const fd=new FormData();
+    fd.append("access_key",WEB3FORMS_KEY);
+    fd.append("subject",`${TEST_MODE?"[TEST] ":""}Profil investisseur – ${p.prenom} ${p.nom} – ${p.profilLabel||"?"} – pour ${adv}`);
+    fd.append("from_name","Questionnaire L&E");
+    if(p.email)fd.append("replyto",p.email);
+    const cc=[adv!=="Guillaume"?EMAILS[adv]:"",COPIE_SYSTEMATIQUE].filter(Boolean).join(";");
+    if(cc)fd.append("ccemail",cc);
+    fd.append("Client",`${p.prenom} ${p.nom}${p.naissance?" – né(e) le "+p.naissance:""}`);
+    fd.append("Contact",`${p.email||"—"} · ${p.tel||"—"}`);
+    fd.append("Conseiller",`${adv} ${ADVISORS[advisor][1]}`);
+    fd.append("Profil retenu",r.fin!=null?`${LV[r.fin]} (SRI ${SRI[r.fin]})`:"Incomplet");
+    fd.append("Points de vigilance",r.al.length?r.al.join(" • "):"Aucun");
+    try{const blob=await buildPdf(p);pdfOk=true;
+      fd.append("attachment",blob,`Profil_investisseur_${(p.nom||"client").replace(/[^\w-]+/g,"_")}_${(p.prenom||"").replace(/[^\w-]+/g,"_")}.pdf`)}
+    catch(e){fd.append("Document","Le PDF n'a pas pu être généré : réponses détaillées ci-dessous.");fd.append("Réponses",emailBody(p,r))}
+    if(btn)btn.textContent="Envoi…";
+    try{const res=await fetch("https://api.web3forms.com/submit",{method:"POST",headers:{Accept:"application/json"},body:fd});
+      const j=await res.json().catch(()=>({}));sent=res.ok&&j.success!==false}catch(_){sent=false}
+  }
+  lastResult={r,sent,code:`Questionnaire profil investisseur – ${p.prenom} ${p.nom}\n\n${emailBody(p,r)}`};
+  view="done";go();
+}
+render();
+
+</script>
+
+</body>
+</html>
