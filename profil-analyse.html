@@ -273,7 +273,7 @@ const STEPS=[
   R("Q11","Votre statut",["Dirigeant","Salarié","Indépendant / libéral","Retraité","Autre"])]},
  {k:"Étape 2",title:"Vos projets",sub:"Pour orienter les solutions vers ce qui compte vraiment pour vous.",qs:[
   M("Q12","Vos objectifs pour ce placement",OBJ,{hint:"2 réponses maximum",max:2}),
-  R("Q13","Pour l'essentiel de la somme placée, dans combien de temps pensez-vous en avoir besoin ?",["Moins de 2 ans","2 à 3 ans","3 à 5 ans","5 à 8 ans","Plus de 8 ans"]),
+  R("Q13","Dans combien de temps pensez-vous retirer la totalité (ou presque) de la somme placée ?",["Moins de 2 ans","2 à 3 ans","3 à 5 ans","5 à 8 ans","Plus de 8 ans, ou je n'envisage pas de tout retirer"],{hint:"Les retraits ponctuels d'une partie de la somme ne comptent pas ici : ils sont traités dans la question suivante."}),
   R("Q14","Quelle part de votre patrimoine total représente ce placement ?",["Moins de 10 %","10 à 25 %","25 à 50 %","Plus de 50 %"]),
   R("Q15","Pendant la durée du placement, vous souhaitez…",["Laisser fructifier sans y toucher","Percevoir des revenus réguliers","Pouvoir retirer une partie si besoin","Pouvoir tout récupérer à tout moment"]),
   M("Q16","Y a-t-il des placements que vous refusez ?",EXCL,{hint:"Plusieurs réponses possibles",opt:true})]},
@@ -299,7 +299,7 @@ const STEPS=[
 const PTS={Q01:[3,3,2,1,0],Q02:[3,2,0,1],Q03:[0,1,2,3,3,null],Q04:[0,1,2,3,null],Q05:[0,1,2,3,3,null],Q06:[0,1,2,3,null],Q07:[3,2,1,0],Q08:[0,1,2,3],Q14:[3,2,1,0],
  Q22:[0,1,2,3,4],Q23:[0,1,2,3,4],Q24:[0,1,3,4],Q25:[0,1,2,3,4],Q26:[0,1,2,3,4],Q27:[0,2,4]};
 const CAPQ=["Q01","Q02","Q03","Q04","Q05","Q06","Q07","Q08","Q14"],TOLQ=["Q22","Q23","Q24","Q25","Q26","Q27"];
-const OPT13=["Moins de 2 ans","2 à 3 ans","3 à 5 ans","5 à 8 ans","Plus de 8 ans"];
+const OPT13=["Moins de 2 ans","2 à 3 ans","3 à 5 ans","5 à 8 ans","Plus de 8 ans / pas de retrait total prévu"];
 const KNL=["Débutant","Informé","Averti","Expérimenté"];
 
 function analyse(Ans){
