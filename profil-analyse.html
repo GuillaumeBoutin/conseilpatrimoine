@@ -125,6 +125,8 @@ dl.kv dt{color:var(--muted)}dl.kv dd{margin:0}
 .gate{max-width:440px;margin:40px auto 0;background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:26px;text-align:center}
 .gate input{text-align:center;letter-spacing:.15em;text-transform:uppercase;font-size:20px;margin:16px 0 4px}
 .testbar{background:var(--gold);color:#fff;text-align:center;font-size:13px;font-weight:600;padding:6px 10px;border-radius:8px;margin-bottom:10px}
+.infoq{margin:12px 0 0 36px;background:var(--okbg);border-left:4px solid var(--blue);border-radius:0 10px 10px 0;padding:10px 12px;font-size:14px}
+@media (max-width:640px){.infoq{margin-left:0}}
 .warnq{margin:12px 0 0 36px;background:var(--warnbg);border-left:4px solid var(--warn);border-radius:0 10px 10px 0;padding:10px 12px;font-size:14px}
 @media (max-width:640px){.warnq{margin-left:0}}
 .hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
@@ -273,7 +275,7 @@ const STEPS=[
   R("Q11","Votre statut",["Dirigeant","Salarié","Indépendant / libéral","Retraité","Autre"])]},
  {k:"Étape 2",title:"Vos projets",sub:"Pour orienter les solutions vers ce qui compte vraiment pour vous.",qs:[
   M("Q12","Vos objectifs pour ce placement",OBJ,{hint:"2 réponses maximum",max:2}),
-  R("Q13","Dans combien de temps pensez-vous retirer la totalité (ou presque) de la somme placée ?",["Moins de 2 ans","2 à 3 ans","3 à 5 ans","5 à 8 ans","Plus de 8 ans, ou je n'envisage pas de tout retirer"],{hint:"Les retraits ponctuels d'une partie de la somme ne comptent pas ici : ils sont traités dans la question suivante."}),
+  R("Q13","Dans combien de temps pensez-vous retirer la totalité (ou presque) de la somme placée ?",["Moins de 2 ans","2 à 3 ans","3 à 5 ans","5 à 8 ans","Plus de 8 ans, ou je n'envisage pas de tout retirer"],{hint:"Les retraits ponctuels d'une partie de la somme ne comptent pas ici : ils sont traités dans la question suivante. Un horizon inférieur à 3 ans plafonne le profil à « Prudent »."}),
   R("Q14","Quelle part de votre patrimoine total représente ce placement ?",["Moins de 10 %","10 à 25 %","25 à 50 %","Plus de 50 %"]),
   R("Q15","Pendant la durée du placement, vous souhaitez…",["Laisser fructifier sans y toucher","Percevoir des revenus réguliers","Pouvoir retirer une partie si besoin","Pouvoir tout récupérer à tout moment"]),
   M("Q16","Y a-t-il des placements que vous refusez ?",EXCL,{hint:"Plusieurs réponses possibles",opt:true})]},
