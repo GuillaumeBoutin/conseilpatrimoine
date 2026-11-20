@@ -201,7 +201,7 @@ function synthHTML(A,ID,conseiller,opts={}){
     "Votre client connaît les principaux supports (fonds, actions, obligations, SCPI) et comprend la relation entre rendement et risque.",
     "Votre client maîtrise la plupart des produits, y compris non cotés et structurés, et en a une expérience concrète.",
     "Votre client dispose d'une connaissance approfondie des marchés et des produits complexes, appuyée par une expérience régulière."];
-  const knCard=`<div class="s-card"><h3>Connaissance et expérience</h3>${gauge(KN,["#d7cfe6","#a796c4","#7a63a6","#4e3a7d"],[{i:r.knL,c:"#7a63a6",l:r.kn+" / 22"}])}
+  const knCard=`<div class="s-card"><h3>Connaissance et expérience</h3>${gauge(KN,["#d7cfe6","#a796c4","#7a63a6","#4e3a7d"],[{i:r.knL,c:"#7a63a6",l:r.kn+" / 24"}])}
     <div class="s-txt">${KNT[r.knL]}</div><div class="s-lnk">→ Connaissance par produit : ${xp} / ${PRODS.length} · quiz ${r.quiz} / ${QUIZ.length}</div></div>`;
   // 2. Profil de risque (tolérance + profil retenu)
   const PT=["Vous souhaitez prendre le minimum de risques afin de réaliser vos projets en toute sécurité. Seuls des supports à capital garanti ou très faiblement volatils sont adaptés.",
@@ -255,7 +255,7 @@ const LV=["Sécuritaire","Prudent","Équilibré","Dynamique","Offensif"];
 const LVC=["var(--p1)","var(--p2)","var(--p3)","var(--p4)","var(--p5)"];
 const SRI=["1 – 2","2 – 3","3 – 4","4 – 5","5 – 7"];
 const PRODS=["Livrets, fonds en euros","Fonds (OPCVM, SICAV, ETF) / unités de compte","Actions en direct (PEA, compte-titres)","Obligations","Immobilier « papier » (SCPI, OPCI)","Non coté / private equity (FCPR, FCPI, FIP)","Produits structurés","Produits à effet de levier, dérivés"];
-const QUIZ=[["Sur un fonds en euros, le capital est garanti par l'assureur.","V"],["Pour espérer un rendement plus élevé, il faut accepter un risque de perte plus important.","V"],["Une obligation est toujours intégralement remboursée.","F"],["Répartir son argent sur plusieurs placements permet de réduire le risque.","V"],["Dans une assurance-vie, l'argent est bloqué pendant 8 ans.","F"],["Le capital investi en SCPI est garanti.","F"],["On peut revendre ses parts de FCPI ou de FIP à tout moment, sans contrainte.","F"],["Un produit structuré peut entraîner une perte en capital.","V"],["Un ETF (tracker) cherche à reproduire l'évolution d'un indice boursier.","V"],["Avec un PER, l'épargne est en principe bloquée jusqu'à la retraite.","V"],["Quand les taux d\'intérêt montent, la valeur des obligations déjà émises a tendance à baisser.","V"],["Un produit structuré avec une protection du capital jusqu\'à – 40 % garantit de récupérer au moins 60 % de sa mise à l\'échéance.","F"]];
+const QUIZ=[["Sur un fonds en euros, le capital est garanti par l'assureur.","V"],["Pour espérer un rendement plus élevé, il faut accepter un risque de perte plus important.","V"],["Une obligation est toujours intégralement remboursée.","F"],["Répartir son argent sur plusieurs placements permet de réduire le risque.","V"],["Dans une assurance-vie, l'argent est bloqué pendant 8 ans.","F"],["Le capital investi en SCPI est garanti.","F"],["On peut revendre ses parts de FCPI ou de FIP à tout moment, sans contrainte.","F"],["Un produit structuré peut entraîner une perte en capital.","V"],["Un ETF (tracker) cherche à reproduire l'évolution d'un indice boursier.","V"],["Avec un PER, l'épargne est en principe bloquée jusqu'à la retraite.","V"],["Quand les taux d\'intérêt montent, la valeur des obligations déjà émises a tendance à baisser.","V"],["Un produit structuré avec une protection du capital jusqu\'à – 40 % garantit de récupérer au moins 60 % de sa mise à l\'échéance.","F"],["Acheter une action, c'est devenir propriétaire d'une petite partie de l'entreprise.","V"],["Les dividendes versés par une action sont garantis chaque année.","F"]];
 const OBJ=["Sécuriser une épargne disponible","Compléter mes revenus","Faire fructifier mon capital","Préparer ma retraite","Transmettre à mes proches","Réduire ma fiscalité","Préparer la cession de mon entreprise","Investir dans l'économie réelle","Financer un projet"];
 const EXCL=["Immobilier (SCPI, OPCI…)","Entreprises non cotées","Produits structurés","Effet de levier","Aucun, tout est envisageable"];
 const PAI=["Climat","Biodiversité","Eau et pollution","Déchets dangereux","Efficacité énergétique des bâtiments","Droits humains (OCDE / ONU)","Égalité femmes-hommes","Exclusion des armes controversées"];
@@ -276,7 +276,7 @@ const STEPS=[
  {k:"Étape 2",title:"Vos projets",sub:"Pour orienter les solutions vers ce qui compte vraiment pour vous.",qs:[
   M("Q12","Vos objectifs pour ce placement",OBJ,{hint:"2 réponses maximum",max:2}),
   R("Q13","Dans combien de temps pensez-vous retirer la totalité (ou presque) de la somme placée ?",["Moins de 2 ans","2 à 3 ans","3 à 5 ans","5 à 8 ans","Plus de 8 ans, ou je n'envisage pas de tout retirer"],{hint:"Les retraits ponctuels d'une partie de la somme ne comptent pas ici : ils sont traités dans la question suivante. Un horizon inférieur à 3 ans plafonne le profil à « Prudent »."}),
-  R("Q14","Quelle part de votre patrimoine total représente ce placement ?",["Moins de 10 %","10 à 25 %","25 à 50 %","Plus de 50 %"]),
+  R("Q14","Le montant que vous envisagez de placer représente quelle part de l'ensemble de votre patrimoine (immobilier compris) ?",["Moins de 10 %","10 à 25 %","25 à 50 %","Plus de 50 %"],{hint:"Exemple : 10 000 € pour un patrimoine total de 400 000 € = 2,5 %, soit « Moins de 10 % »",amount:true}),
   R("Q15","Pendant la durée du placement, vous souhaitez…",["Laisser fructifier sans y toucher","Percevoir des revenus réguliers","Pouvoir retirer une partie si besoin","Pouvoir tout récupérer à tout moment"]),
   M("Q16","Y a-t-il des placements que vous refusez ?",EXCL,{hint:"Plusieurs réponses possibles",opt:true})]},
  {k:"Étape 3",title:"Vos connaissances",sub:"Pour vous proposer uniquement des solutions que vous comprenez.",qs:[
@@ -284,26 +284,31 @@ const STEPS=[
   M("Q18","Comment gérez-vous vos placements aujourd'hui ?",["Seul(e)","Avec un conseiller","En gestion sous mandat","Je n'ai pas encore de placements"],{hint:"Plusieurs réponses possibles"}),
   R("Q19","Avez-vous déjà subi une perte sur un placement ?",["Non, jamais","Oui, et j'ai tout vendu","Oui, et j'ai patienté","Oui, et j'en ai profité pour racheter"]),
   R("Q20","Avez-vous exercé au moins un an une profession dans la finance (CIF, gérant, DAF, banquier…) ?",["Oui","Non"])]},
- {k:"Quiz",title:"Vrai ou faux ?",sub:"12 affirmations, 3 minutes. Les deux dernières sont plus techniques : répondez « ? » si vous n'êtes pas sûr(e).",qs:[
+ {k:"Quiz",title:"Vrai ou faux ?",sub:"14 affirmations, 3 minutes. Les affirmations 11 et 12 sont plus techniques.",intro:"quiz",qs:[
   {id:"Q21",type:"quiz",t:"Pour chaque affirmation, choisissez votre réponse"}]},
  {k:"Étape 4",title:"Votre rapport au risque",sub:"Quelques mises en situation : répondez spontanément, il s'agit de votre ressenti.",intro:"duo",qs:[
   R("Q22","Pour vous, placer son argent, c'est avant tout…",["Ne rien perdre","Gagner un peu plus qu'un livret, sans à-coups","Trouver un juste équilibre entre sécurité et rendement","Faire croître mon capital, quitte à traverser des baisses","Viser la meilleure performance possible"]),
   R("Q23","Vous placez 10 000 € pour un an. Voici la valeur la plus basse et la plus haute que pourraient atteindre 5 placements au bout d'un an. Lequel choisissez-vous ?",["Placement A","Placement B","Placement C","Placement D","Placement E"],{chart:true}),
-  R("Q24","Vous avez placé la moitié de votre épargne. Trois mois plus tard, sa valeur a baissé de 20 %. Que faites-vous ?",["Je vends tout pour arrêter les frais","J'en vends une partie","Je ne touche à rien et j'attends","J'en rachète : c'est le moment !"]),
+  R("Q24","Vous avez placé la moitié de votre épargne. Trois mois plus tard, sa valeur a baissé de 20 %. Que faites-vous ?",["Je vends tout pour arrêter les frais","J'en vends une partie","Je ne touche à rien et j'attends","J'en rachète : c'est le moment !","Je n'aurais pas fait ce placement : je ne veux pas risquer une telle baisse"]),
   R("Q25","À partir de quelle baisse temporaire sur un an commencez-vous à vraiment vous inquiéter ?",["Dès la moindre baisse","– 5 %","– 10 %","– 20 %","Au-delà de – 20 %"]),
   R("Q26","Après une forte baisse, combien de temps êtes-vous prêt(e) à attendre pour retrouver votre mise ?",["Moins de 6 mois","6 mois à 1 an","1 à 2 ans","2 à 4 ans","Plus de 4 ans"]),
-  R("Q27","Vous gagnez à un jeu. Quelle option choisissez-vous ?",["1 000 € tout de suite, garantis","1 chance sur 2 de gagner 2 000 €, sinon 500 €","1 chance sur 4 de gagner 6 000 €, sinon rien"]),
+  R("Q27","Vous venez de gagner 1 000 € à un jeu. On vous propose d'échanger ce gain contre une autre option. Que choisissez-vous ?",["Je garde mes 1 000 €, c'est sûr","Je tente : 1 chance sur 2 de recevoir 2 000 €, sinon 500 €","Je tente : 1 chance sur 4 de recevoir 6 000 €, sinon rien"]),
   R("Q28","Et la perte en capital, définitive cette fois : quelle perte pourriez-vous supporter sur la somme investie ?",["Aucune : je dois retrouver au minimum le capital investi","Une perte limitée, de l'ordre de 10 à 20 % du capital investi","La perte de tout le capital investi sur certains placements, s'ils ne représentent qu'une petite partie de mon patrimoine","Une perte pouvant dépasser le capital investi (effet de levier)"],{hint:"À ne pas confondre avec la baisse temporaire des questions précédentes"})]},
  {k:"Étape 5",title:"Vos valeurs",sub:"Souhaitez-vous que vos placements tiennent compte de critères environnementaux, sociaux ou de gouvernance ?",qs:[
   R("Q29","Vos préférences en matière de durabilité",["Non, je n'ai pas de préférence particulière","Oui, je souhaite les préciser"]),
   {id:"Q30",type:"esg",t:"Quelle part de votre placement souhaitez-vous consacrer à chacun de ces engagements ?",hint:"Choisissez uniquement les lignes qui vous intéressent, laissez les autres vides.",when:()=>A.Q29==="2"}]}
 ];
 const PTS={Q01:[3,3,2,1,0],Q02:[3,2,0,1],Q03:[0,1,2,3,3,null],Q04:[0,1,2,3,null],Q05:[0,1,2,3,3,null],Q06:[0,1,2,3,null],Q07:[3,2,1,0],Q08:[0,1,2,3],Q14:[3,2,1,0],
- Q22:[0,1,2,3,4],Q23:[0,1,2,3,4],Q24:[0,1,3,4],Q25:[0,1,2,3,4],Q26:[0,1,2,3,4],Q27:[0,2,4]};
+ Q22:[0,1,2,3,4],Q23:[0,1,2,3,4],Q24:[0,1,3,4,0],Q25:[0,1,2,3,4],Q26:[0,1,2,3,4],Q27:[0,2,4]};
 const CAPQ=["Q01","Q02","Q03","Q04","Q05","Q06","Q07","Q08","Q14"],TOLQ=["Q22","Q23","Q24","Q25","Q26","Q27"];
 const OPT13=["Moins de 2 ans","2 à 3 ans","3 à 5 ans","5 à 8 ans","Plus de 8 ans / pas de retrait total prévu"];
 const KNL=["Débutant","Informé","Averti","Expérimenté"];
 
+function shareCheck(Ans){ // part réelle estimée à partir du montant et des tranches de patrimoine (bornes basses)
+  const m=parseFloat(String(Ans.Q14_montant||"").replace(/[^\d,.]/g,"").replace(",","."));if(!m||m<=0)return null;
+  const fin=[0,50000,200000,500000,1000000][+Ans.Q05-1], immo=[0,0,300000,1000000][+Ans.Q06-1];
+  const lb=(fin||0)+(immo||0);if(!lb)return null;const sh=Math.min(1,m/Math.max(lb,m));
+  const lvl=sh<.10?1:sh<.25?2:sh<.5?3:4;return {m,sh,lvl,incoh:Ans.Q14&&+Ans.Q14>lvl};}
 function analyse(Ans){
   const pts=id=>Ans[id]?PTS[id][+Ans[id]-1]:null;
   const sum=ids=>{let s=0,n=0;ids.forEach(i=>{const p=pts(i);if(p!=null){s+=p;n++}});return{s,n}};
@@ -311,7 +316,8 @@ function analyse(Ans){
   const tol=sum(TOLQ);
   // capacité : réponses « ne souhaite pas répondre / non concerné » neutralisées, score ramené sur 27
   const big=Ans.Q05==="4"||Ans.Q05==="5";
-  let cs=0,cn=0;CAPQ.forEach(i=>{let p=pts(i);if(p==null)return;if(i==="Q14"&&big)p=Math.max(p,2);cs+=p;cn++});
+  const shc=shareCheck(Ans);
+  let cs=0,cn=0;CAPQ.forEach(i=>{let p=pts(i);if(i==="Q14"&&shc){const pc=[3,2,1,0][shc.lvl-1];p=p==null?pc:Math.max(p,pc)}if(p==null)return;if(i==="Q14"&&big)p=Math.max(p,2);cs+=p;cn++});
   const cap={s:cn?Math.round(cs/(cn*3)*27):0,n:cn};
   const tolL=tol.n?band(tol.s,[4,9,14,19,24]):null;
   let capL=cap.n?Math.max(1,band(cap.s,[-1,7,12,19,27])):null; if(Ans.Q08==="1"&&capL!=null)capL=Math.max(0,capL-1);
@@ -320,13 +326,14 @@ function analyse(Ans){
   const ks=axes.map(a=>a[1]).filter(l=>l!=null), fin=ks.length?Math.min(...ks):null;
   let quiz=0;QUIZ.forEach((q,i)=>{if(Ans["Q21_"+String(i+1).padStart(2,"0")]===q[1])quiz++});
   let xp=0;PRODS.forEach((_,i)=>{const v=Ans["Q17_"+(i+1)];if(v==="3"||v==="4")xp++});
-  const kn=quiz+xp+((Ans.Q19==="3"||Ans.Q19==="4")?1:0)+(Ans.Q20==="1"?1:0), knL=band(kn,[6,12,17,22]);
+  const kn=quiz+xp+((Ans.Q19==="3"||Ans.Q19==="4")?1:0)+(Ans.Q20==="1"?1:0), knL=band(kn,[7,13,19,24]);
   const al=[];
   if(Ans.Q08==="1")al.push("Épargne de précaution inférieure à 3 mois : capacité abaissée d'un niveau, à vérifier.");
   if(Ans.Q28==="1")al.push("Aucune perte en capital acceptée : profil plafonné à Prudent, supports garantis à privilégier – à valider en rendez-vous.");
   if(Ans.Q03==="6"||Ans.Q05==="6"||Ans.Q06==="5")al.push("Revenus ou patrimoine non communiqués : à compléter en rendez-vous.");
   if(Ans.Q15==="4")al.push("Disponibilité totale exigée : exclure SCPI, non coté, structurés.");
   if(Ans.Q07==="4")al.push("Taux d'effort supérieur à 35 %.");
+  if(shc&&shc.incoh)al.push(`Part du patrimoine déclarée (Q14) incohérente avec le montant indiqué (${Math.round(shc.m).toLocaleString("fr-FR")} €, soit environ ${Math.max(1,Math.round(shc.sh*100))} % au plus) : part recalculée.`);
   if(Ans.Q02==="3")al.push("Revenus susceptibles de baisser ou irréguliers.");
   if(Ans.Q28==="1"&&tolL!=null&&tolL>=2)al.push("Alerte AMF : tolérant aux fluctuations mais refuse toute perte en capital (confusion volatilité / perte).");
   if(Ans.Q23&&Ans.Q25&&Math.abs(+Ans.Q23-+Ans.Q25)>=2)al.push("Incohérence entre le placement choisi (Q23) et le seuil d'inquiétude (Q25).");
@@ -406,7 +413,7 @@ async function load(file){
         const m=k.match(/^(Q12|Q16|Q18)_(\d+)$/),t=k.match(/^Q30_t(\d+)$/);
         if(m)(A[m[1]]=A[m[1]]||[]).push(+m[2]);else if(t)(A.Q30_t=A.Q30_t||[]).push(+t[1]);else if(k==="Q10_deja")A.Q10_deja=true}
       else if(f instanceof L.PDFTextField){const v=(f.getText()||"").trim();if(!v)continue;
-        if(k==="Q09"||k==="Q10")A[k]=v;else if(k==="NOM")ID.nom=v;else if(k==="PRENOM")ID.prenom=v;else if(k==="NAISSANCE")ID.naissance=v;else if(k==="EMAIL")ID.email=v}}
+        if(k==="Q09"||k==="Q10")A[k]=v;else if(k==="Q14_M")A.Q14_montant=v;else if(k==="NOM")ID.nom=v;else if(k==="PRENOM")ID.prenom=v;else if(k==="NAISSANCE")ID.naissance=v;else if(k==="EMAIL")ID.email=v}}
     if(!form.getFields().some(f=>/^Q\d\d/.test(f.getName()))){err="Ce PDF ne contient pas les champs du questionnaire L&E (PDF aplati ou autre document).";render();return}
     let meta={};const sub=doc.getSubject()||"";if(sub.startsWith("LE-PROFIL:")){try{meta=JSON.parse(decodeURIComponent(escape(atob(sub.slice(10)))))}catch(_){}}
     if(!ID.prenom&&meta.prenom)ID.prenom=meta.prenom;if(!ID.nom&&meta.nom)ID.nom=meta.nom;
