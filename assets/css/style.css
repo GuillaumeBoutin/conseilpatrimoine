@@ -743,6 +743,11 @@ form.contact-form .consent { font-size: 0.82rem; color: #5a6377; margin-bottom: 
   margin: 28px 0;
 }
 .article-callout p:last-child { margin-bottom: 0; }
+.article-table-wrap { overflow-x: auto; margin: 24px 0; }
+.article-table { width: 100%; min-width: 520px; border-collapse: collapse; font-size: 0.95rem; }
+.article-table th, .article-table td { text-align: left; padding: 10px 14px; border-bottom: 1px solid var(--border); vertical-align: top; }
+.article-table th { background: var(--cream); color: var(--navy); font-weight: 700; }
+.article-table td:nth-child(2) { white-space: nowrap; font-weight: 700; color: var(--teal); }
 .article-author {
   display: flex;
   align-items: center;
