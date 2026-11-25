@@ -333,6 +333,7 @@ const OPT13=["Moins de 2 ans","2 à 3 ans","3 à 5 ans","5 à 8 ans","Plus de 8 
 const KNL=["Débutant","Informé","Averti","Expérimenté"];
 
 let A={}, ID={prenom:"",nom:"",email:"",tel:"",naissance:""}, view="gate", step=0, advisor=null, consent=false, missing=[], sendErr="", lastResult=null;
+try{if(sessionStorage.getItem("le_code_ok")==="1")view="type"}catch(_){}
 
 // ---------- calcul (règles identiques à la grille conseiller) ----------
 function shareCheck(Ans){ // part réelle estimée à partir du montant et des tranches de patrimoine (bornes basses)
@@ -421,6 +422,9 @@ function render(){
     <input class="txt" id="code_in" autocomplete="off" aria-label="Code d'accès">${sendErr?`<div class="err">${esc(sendErr)}</div>`:""}
     <div style="margin-top:14px"><button class="btn primary" id="gatebtn" type="button">Accéder au questionnaire</button></div></div>`;
     setTimeout(()=>{const i=$("#code_in");i&&i.focus()},0);return}
+  if(view==="type"){app.innerHTML=`<section class="hero"><div class="kick" style="color:var(--gold)">Questionnaire 2026</div><h1>Pour qui répondez-vous ?</h1><p class="lead">Le questionnaire est différent pour un particulier et pour une société.</p></section>
+    <div class="advs" style="grid-template-columns:repeat(2,minmax(0,1fr));margin-top:18px"><button type="button" class="adv" id="t_pp"><div class="av">P</div><b>Pour moi-même</b><span class="muted">Particulier : épargne et patrimoine personnels</span></button>
+    <a class="adv" id="t_pm" href="profil-societe.html" style="text-decoration:none"><div class="av">S</div><b>Pour une société</b><span class="muted">Holding, société d'exploitation, SCI à l'IS, association…</span></a></div>`;return}
   if(view==="intro"){app.innerHTML=`<section class="hero"><div class="kick" style="color:var(--gold)">Questionnaire 2026</div><h1>Quel investisseur<br>êtes-vous ?</h1><p class="lead">5 étapes, une quinzaine de minutes. Vos réponses sont transmises directement à votre conseiller pour préparer notre prochain échange.</p></section>
     <div class="steps5">${["Votre situation","Vos projets","Vos connaissances","Votre rapport au risque","Vos valeurs"].map((s,i)=>`<div><b>${i+1}</b>${s}</div>`).join("")}</div>
     <div class="q"><div class="qt"><span class="qn">✓</span><span>Faisons connaissance</span></div><div class="fields" style="margin-top:12px">
@@ -467,6 +471,7 @@ document.addEventListener("click",e=>{
   else if(t.dataset.adv!=null){advisor=+t.dataset.adv;render()}
   else if(t.id==="send")send();
   else if(t.id==="cp"){const ta=$("#code");navigator.clipboard.writeText(ta.value).then(()=>$("#cpm").textContent="Copié.").catch(()=>{ta.select();$("#cpm").textContent="Sélectionné : faites Ctrl+C."})}
+  else if(t.id==="t_pp"){view="intro";go()}
   else if(t.id==="gatebtn")checkCode();
   else if(t.id==="retry")send();
 });
@@ -477,7 +482,7 @@ let tries=0;
 async function checkCode(){const v=($("#code_in").value||"").trim().toUpperCase();if(!v)return;
   if(++tries>8){sendErr="Trop d'essais. Rechargez la page ou contactez votre conseiller.";render();return}
   let ok=false;try{ok=(await sha256(v))===CODE_HASH}catch(_){sendErr="Votre navigateur ne permet pas de vérifier le code. Essayez avec un navigateur récent.";render();return}
-  if(ok){sendErr="";view="intro";go()}else{sendErr="Code incorrect. Vérifiez le code transmis par votre conseiller.";render()}}
+  if(ok){sendErr="";try{sessionStorage.setItem("le_code_ok","1")}catch(_){}view="type";go()}else{sendErr="Code incorrect. Vérifiez le code transmis par votre conseiller.";render()}}
 document.addEventListener("change",e=>{if(e.target.id==="consent"){consent=e.target.checked;render()}if(e.target.dataset&&e.target.dataset.t==="Q14_montant")keepScroll(render)});
 function go(){render();window.scrollTo({top:0,behavior:"smooth"})}
 function keepScroll(fn){const y=window.scrollY;fn();window.scrollTo(0,y)}

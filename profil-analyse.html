@@ -374,6 +374,153 @@ textarea.com{width:100%;min-height:90px;font:400 15px var(--body);color:var(--fg
 .steps{margin:10px 0 0;padding-left:20px;font-size:14.5px;color:var(--muted)}
 </style>
 <script>
+/* ===== Profil investisseur PERSONNE MORALE – règles de calcul et page de synthèse (L&E) =====
+   Dépend de SYN_CSS et ring() (synthèse particuliers). Tout est isolé dans PMX pour cohabiter avec le code particuliers. */
+const PMX=(()=>{
+const LV=["Sécuritaire","Prudent","Équilibré","Dynamique","Offensif"];
+const SRI=["1 – 2","2 – 3","3 – 4","4 – 5","5 – 7"];
+const PRODS=["Comptes à terme, titres de créance négociables","Fonds monétaires","Fonds en euros, contrats de capitalisation","Obligations, fonds obligataires","Actions cotées, fonds actions","Immobilier « papier » (SCPI, OPCI)","Capital investissement (FCPR, FCPI, FIP)","Produits structurés","Obligations complexes (convertibles, EMTN…)","Actions non cotées ou hors marché réglementé (Euronext Growth / Access)","Produits à effet de levier, dérivés"];
+const QUIZ=[["Sur un compte à terme, le taux et la durée sont fixés dès la souscription.","V"],["Sur un compte à terme, on peut ajouter des fonds à tout moment.","F"],["Un fonds monétaire est le support idéal pour un placement de long terme.","F"],["La valeur d'un fonds obligataire varie avec l'évolution des taux d'intérêt.","V"],["Une obligation est toujours intégralement remboursée par son émetteur.","F"],["Pour espérer un rendement plus élevé, il faut accepter un risque de perte plus important.","V"],["Répartir la trésorerie sur plusieurs placements permet de réduire le risque.","V"],["Le cours d'une action dépend de la santé de l'entreprise et de son environnement économique.","V"],["Les parts de SCPI peuvent toujours être revendues immédiatement, à leur prix d'achat.","F"],["Un OPCI est avant tout un placement de défiscalisation.","F"],["Les FCPR, FCPI et FIP sont des placements risqués, à conserver en général 6 à 10 ans.","V"],["Un produit structuré garantit toujours le capital, comme un fonds en euros.","F"],["Une obligation convertible combine le potentiel des actions et la sécurité des obligations, sans risque de perte.","F"],["Les titres cotés hors marché réglementé (Euronext Growth, Access) peuvent être plus difficiles à revendre.","V"],["La volatilité d'un fonds est un bon indicateur de son niveau de risque.","V"],["Une moins-value latente sur un placement de trésorerie peut obliger la société à passer une provision qui réduit son résultat.","V"],["Pour une société à l'IS, les plus-values latentes sur certains fonds sont imposées chaque année, même sans vente.","V"]];
+const NATURE=["Société d'exploitation","Holding animatrice","Holding patrimoniale","Société civile à l'IS","Association, fondation, autre"];
+const SEUILS=["Total du bilan ≥ 20 M€","Chiffre d'affaires ≥ 40 M€","Capitaux propres ≥ 2 M€","Aucun de ces seuils"];
+const ORIG=["Excédent de trésorerie de l'activité","Remontée de dividendes de filiales","Produit de cession d'une entreprise ou d'un actif","Réemploi d'un apport-cession (article 150-0 B ter)","Autre origine"];
+const OBJ=["Préserver le capital","Rémunérer une trésorerie disponible","Dégager des revenus réguliers","Faire croître le capital sur le long terme","Préparer une cession ou une transmission","Diversifier l'actif (immobilier, non coté…)","Financer un projet de la société"];
+const HOR=["Moins d'1 an","1 à 3 ans","3 à 5 ans","5 à 8 ans","Plus de 8 ans / pas de retrait total prévu"];
+const DISP=["Laisser fructifier sans y toucher","Percevoir des revenus réguliers","Pouvoir retirer une partie si besoin","Pouvoir tout récupérer à tout moment"];
+const CONTR=["Une moins-value latente en fin d'exercice (provision) poserait problème pour les comptes","Les placements doivent être validés par les associés ou le conseil","Les statuts ou des covenants bancaires limitent les placements","Aucune contrainte particulière"];
+const EXCL=["Immobilier (SCPI, OPCI…)","Entreprises non cotées","Produits structurés","Effet de levier","Aucun, tout est envisageable"];
+const PAI=["Climat","Biodiversité","Eau et pollution","Déchets dangereux","Efficacité énergétique des bâtiments","Droits humains (OCDE / ONU)","Égalité femmes-hommes","Exclusion des armes controversées"];
+const LOSS=["Aucune : la société doit retrouver au minimum le capital placé","Une perte limitée, inférieure à 10 % du capital placé","Une perte significative, de 10 à 50 % du capital placé","La perte de tout le capital placé sur certains supports, s'ils ne représentent qu'une petite partie de la trésorerie","Une perte pouvant dépasser le capital placé (produits à effet de levier)"];
+const PTS={Q02:[3,2,0,null],Q03:[0,1,2,3,null],Q04:[0,1,2,3,null],Q05:[3,2,1,0],Q06:[0,1,2,3],Q07:[3,2,1,0],
+  Q22:[0,1,3,4],Q23:[0,1,2,3,4],Q24:[0,1,3,4,0],Q25:[0,1,2,3,4],Q26:[0,1,2,3,4],Q27:[0,1,3,4],Q27B:[0,2,4]};
+const CAPQ=["Q02","Q03","Q04","Q05","Q06","Q07"],TOLQ=["Q22","Q23","Q24","Q25","Q26","Q27","Q27B"];
+const MULTI=["Q08","Q09","Q10","Q13","Q14","Q18"];
+
+function shareCheck(A){ // part de la trésorerie estimée à partir du montant et de la tranche de trésorerie (borne basse)
+  const m=parseFloat(String(A.Q07_montant||"").replace(/[^\d,.]/g,"").replace(",","."));if(!m||m<=0)return null;
+  const lb=[0,100000,500000,2000000][+A.Q04-1];if(!lb)return null;const sh=Math.min(1,m/Math.max(lb,m));
+  const lvl=sh<.25?1:sh<.5?2:sh<.75?3:4;return{m,sh,lvl,incoh:!!(A.Q07&&+A.Q07>lvl)};}
+function analyse(A){
+  const pts=id=>A[id]?PTS[id][+A[id]-1]:null;
+  const band=(s,c)=>c.findIndex(x=>s<=x);
+  let ts=0,tm=0,tn=0;TOLQ.forEach(i=>{const p=pts(i);if(p!=null){ts+=p;tm+=Math.max(...PTS[i]);tn++}});
+  const tol={s:tm?Math.round(ts*24/tm):0,n:tn};
+  const shc=shareCheck(A);
+  let cs=0,cn=0;CAPQ.forEach(i=>{let p=pts(i);if(i==="Q07"&&shc){const pc=[3,2,1,0][shc.lvl-1];p=p==null?pc:Math.max(p,pc)}if(p==null)return;cs+=p;cn++});
+  const cap={s:cn?Math.round(cs/(cn*3)*27):0,n:cn};
+  const tolL=tol.n?band(tol.s,[4,9,14,19,24]):null;
+  let capL=cap.n?Math.max(1,band(cap.s,[-1,7,12,19,27])):null;if(A.Q06==="1"&&capL!=null)capL=Math.max(0,capL-1);
+  const horL=A.Q11?[0,1,2,3,4][+A.Q11-1]:null, lossL=A.Q28?[1,2,4,4,4][+A.Q28-1]:null;
+  const axes=[["Tolérance au risque",tolL,tol.s+" / 24"],["Capacité à subir des pertes",capL,cap.s+" / 27"],["Horizon",horL,A.Q11?HOR[+A.Q11-1]:"—"],["Perte en capital",lossL,A.Q28?["Aucune acceptée","Moins de 10 %","10 à 50 %","Totale (petite poche)","Au-delà (levier)"][+A.Q28-1]:"—"]];
+  const ks=axes.map(a=>a[1]).filter(l=>l!=null), fin=ks.length?Math.min(...ks):null;
+  let quiz=0;QUIZ.forEach((q,i)=>{if(A["Q21_"+String(i+1).padStart(2,"0")]===q[1])quiz++});
+  let xp=0;PRODS.forEach((_,i)=>{const v=A["Q17_"+(i+1)];if(v==="3"||v==="4")xp++});
+  const kn=quiz+xp+((A.Q19==="3"||A.Q19==="4")?1:0)+(A.Q20==="1"?1:0), knL=band(kn,[8,16,23,30]);
+  const has=(k,v)=>(A[k]||[]).includes(v);
+  const al=[];
+  if((A.Q08||[]).filter(x=>x<=3).length>=2)al.push("Au moins 2 seuils MIF 2 atteints : la société peut être classée client professionnel (à documenter).");
+  if(has("Q09",4))al.push("Réemploi 150-0 B ter : 60 % du produit de cession à réinvestir dans les 2 ans dans une activité éligible.");
+  if(A.Q06==="1")al.push("Trésorerie restante inférieure à 3 mois de besoins : capacité abaissée d'un niveau, à vérifier.");
+  if(A.Q28==="1")al.push("Aucune perte en capital acceptée : profil plafonné à Prudent, supports garantis à privilégier – à valider en rendez-vous.");
+  if(A.Q28==="2")al.push("Perte en capital limitée à moins de 10 % : profil plafonné à Équilibré.");
+  if(A.Q28==="1"&&tolL!=null&&tolL>=2)al.push("Alerte AMF : stratégie tolérante aux fluctuations mais aucune perte en capital acceptée (confusion volatilité / perte).");
+  if(has("Q13",1))al.push("Moins-value latente problématique pour les comptes : privilégier capital garanti, CAT ou contrat de capitalisation.");
+  if(has("Q13",2))al.push("Validation des associés ou du conseil requise : prévoir un procès-verbal de décision.");
+  if(has("Q13",3))al.push("Statuts ou covenants bancaires limitant les placements : à vérifier avant toute préconisation.");
+  if(A.Q03==="5"||A.Q04==="5")al.push("Capitaux propres ou trésorerie non communiqués : à compléter avec la liasse fiscale.");
+  if(A.Q12==="4")al.push("Disponibilité totale exigée : exclure SCPI, non coté, structurés.");
+  if(A.Q05==="4")al.push("Endettement financier supérieur aux capitaux propres.");
+  if(A.Q02==="3")al.push("Résultats en baisse ou irréguliers.");
+  if(shc&&shc.incoh)al.push(`Part de la trésorerie déclarée (Q7) incohérente avec le montant indiqué (${Math.round(shc.m).toLocaleString("fr-FR")} €, soit environ ${Math.max(1,Math.round(shc.sh*100))} % au plus) : part recalculée.`);
+  if(A.Q23&&A.Q25&&Math.abs(+A.Q23-+A.Q25)>=2)al.push("Incohérence entre le placement choisi (Q23) et le seuil d'inquiétude (Q25).");
+  if(tolL!=null&&capL!=null&&Math.abs(tolL-capL)>=2)al.push(`Écart tolérance (${LV[tolL]}) / capacité (${LV[capL]}) à creuser.`);
+  if(A.Q11==="1")al.push("Horizon inférieur à 1 an : profil Sécuritaire (trésorerie court terme).");
+  else if(A.Q11==="2")al.push("Horizon de 1 à 3 ans : profil plafonné à Prudent.");
+  return{axes,fin,tol:tol.s,cap:cap.s,quiz,xp,kn,knL,al,shc};
+}
+// lecture des réponses d'un PDF rempli (pdf-lib)
+function readForm(form,L){
+  const A={},ID={rs:"",forme:"",prenom:"",nom:"",fonction:"",email:"",be:""};
+  for(const f of form.getFields()){const k=f.getName();
+    if(f instanceof L.PDFRadioGroup){const v=f.getSelected();if(v)A[k]=String(v)}
+    else if(f instanceof L.PDFCheckBox){if(!f.isChecked())continue;const m=k.match(/^(Q\d\d)_(\d+)$/),t=k.match(/^Q30_t(\d+)$/);
+      if(m)(A[m[1]]=A[m[1]]||[]).push(+m[2]);else if(t)(A.Q30_t=A.Q30_t||[]).push(+t[1])}
+    else if(f instanceof L.PDFTextField){const v=(f.getText()||"").trim();if(!v)continue;
+      const map={RS:"rs",FORME:"forme",NOM:"nom",PRENOM:"prenom",FONCTION:"fonction",EMAIL:"email",BE:"be"};
+      if(k==="Q07_M")A.Q07_montant=v;else if(map[k])ID[map[k]]=v}}
+  return{A,ID};
+}
+// remplissage du modèle PDF
+function fillForm(form,L,A,T){
+  for(const f of form.getFields()){const n=f.getName();
+    try{if(f instanceof L.PDFTextField){if(T[n]!=null)f.setText(String(T[n]))}
+      else if(f instanceof L.PDFRadioGroup){if(A[n]!=null&&A[n]!=="")f.select(String(A[n]))}
+      else if(f instanceof L.PDFCheckBox){const m=n.match(/^(Q\d\d)_(\d+)$/),t=n.match(/^Q30_t(\d+)$/);let on=false;
+        if(m&&MULTI.includes(m[1]))on=(A[m[1]]||[]).includes(+m[2]);else if(t)on=(A.Q30_t||[]).includes(+t[1]);if(on)f.check()}}catch(_){}}
+}
+function synthHTML(A,ID,conseiller,opts={}){
+  const r=analyse(A),esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+  const tolL=r.axes[0][1],capL=r.axes[1][1];
+  const gauge=(labels,colors,marks)=>{const n=labels.length,segW=100/(n+.9),ndW=segW*.9;const on=new Set(marks.filter(m=>m.i!=null).map(m=>m.i));
+    const dup=marks.length>1&&marks[0].i===marks[1].i;
+    const mk=marks.map((m,k)=>{const left=(m.i==null?ndW/2:ndW+segW*(m.i+.5))+(dup?(k?1:-1)*segW*.2:0);return `<span class="s-mk" style="left:${left}%;--m:${m.c}">${m.l?`<i>${m.l}</i>`:""}</span>`}).join("");
+    return `<div class="s-gauge"><span class="s-seg s-nd">Non défini</span>${labels.map((_,i)=>`<span class="s-seg" style="background:${colors[i]}"></span>`).join("")}${mk}</div>
+      <div class="s-lab"><span class="s-nd"></span>${labels.map((l,i)=>`<span class="${on.has(i)?"s-on":""}">${l}</span>`).join("")}</div>`};
+  const KN=["Débutant","Informé","Averti","Expérimenté"];
+  const KNT=["Le décideur connaît essentiellement les supports les plus simples (comptes à terme, monétaire, fonds en euros).",
+    "Le décideur connaît les principaux supports (fonds, actions, obligations, SCPI) et comprend la relation entre rendement et risque.",
+    "Le décideur maîtrise la plupart des produits, y compris non cotés et structurés, et en a une expérience concrète.",
+    "Le décideur dispose d'une connaissance approfondie des marchés et des produits complexes, appuyée par une expérience régulière."];
+  const knCard=`<div class="s-card"><h3>Connaissance et expérience du décideur</h3>${gauge(KN,["#d7cfe6","#a796c4","#7a63a6","#4e3a7d"],[{i:r.knL,c:"#7a63a6",l:r.kn+" / 30"}])}
+    <div class="s-txt">${KNT[r.knL]}</div><div class="s-lnk">→ Connaissance par produit : ${r.xp} / ${PRODS.length} · quiz ${r.quiz} / ${QUIZ.length}</div></div>`;
+  const PT=["La société souhaite prendre le minimum de risques : supports à capital garanti ou monétaires (comptes à terme, fonds monétaires, fonds en euros).",
+    "La société accepte de légères fluctuations en contrepartie d'un rendement un peu supérieur. La sélection privilégie des supports à faible volatilité.",
+    "La société recherche un équilibre entre sécurité et performance et accepte des baisses temporaires modérées.",
+    "La société vise la croissance de son capital sur le long terme et accepte des baisses temporaires significatives.",
+    "La société recherche la performance sur le long terme et accepte une forte volatilité."];
+  const rkCard=`<div class="s-card"><h3>Profil de risque</h3>${gauge(LV,["#e6f1f5","#bcd8e3","#7fa7b5","#3f7d93","#03475f"],[{i:tolL,c:"#a88918"},{i:r.fin,c:"#03475f"}])}<div class="s-legend"><span style="--m:#a88918">Stratégie souhaitée (tolérance)</span><span style="--m:#03475f">Profil retenu</span></div>
+    <div class="s-txt">${r.fin!=null?PT[r.fin]:"Profil non déterminé : réponses incomplètes."}</div>
+    ${tolL!=null&&r.fin!=null&&tolL!==r.fin?`<div class="s-lnk">Le profil retenu est plus prudent que la stratégie souhaitée : il tient compte de la situation financière, de l'horizon et de la perte en capital acceptée.</div>`:""}</div>`;
+  const CL=["Très faible","Faible","Moyenne","Élevée","Très élevée"];
+  const g=(k,arr)=>A[k]?arr[+A[k]-1]:"—";
+  const capCard=`<div class="s-card"><h3>Situation financière et capacité à subir des pertes</h3>${gauge(CL,["#fff1dc","#ffe0b0","#ffcf80","#ffbc4d","#f5a21e"],[{i:capL,c:"#b8860b",l:r.cap+" / 27"}])}
+    <div class="s-txt">Capacité de la société à subir des pertes : <b>${capL!=null?CL[capL].toLowerCase():"non déterminée"}</b>. Capitaux propres : ${g("Q03",["moins de 150 k€","150 à 500 k€","500 k€ à 2 M€","plus de 2 M€","non communiqués"])} · trésorerie : ${g("Q04",["moins de 100 k€","100 à 500 k€","500 k€ à 2 M€","plus de 2 M€","non communiquée"])} · endettement : ${g("Q05",["aucun","< 50 % des CP","50 à 100 % des CP","> CP"])}.${A.Q28?` Perte en capital acceptée : <b>${["aucune","moins de 10 %","10 à 50 %","totale sur une petite poche","au-delà du capital (levier)"][+A.Q28-1]}</b>.`:""}</div></div>`;
+  const app=[["Q30_1","Activités environnementales","Activités reconnues comme vertes (taxonomie européenne)"],["Q30_2","Objectif environnemental et social","Placements poursuivant un objectif environnemental ou social (SFDR)"],["Q30_3","Incidences négatives","Éviter les entreprises les plus nuisibles (principales incidences négatives)"]];
+  const vals=A.Q29==="2"?app.map(a=>+A[a[0]]||0):[0,0,0],n50=vals.filter(v=>v>=50).length,mx=Math.max(...vals);
+  const esgL=A.Q29==null?null:A.Q29==="1"||mx===0?0:n50>=2?3:n50===1?2:1,themes=(A.Q30_t||[]).map(i=>PAI[i-1]);
+  const esgCard=`<div class="s-card"><h3>Sensibilité extra-financière</h3>${gauge(["Neutre","Modérée","Significative","Forte"],["#dfeccb","#b4d47a","#6e9a2e","#46661b"],[{i:esgL,c:"#6e8227"}])}
+    ${app.map((a,k)=>`<div class="s-esg"><span class="s-ring">${ring(vals[k])}<i>${vals[k]?vals[k]+" %":"–"}</i></span><span class="s-t"><b>${a[1]}</b><span>${vals[k]?`Au moins ${vals[k]} % de l'investissement`:"Non défini"}</span></span></div>`).join("")}
+    ${themes.length?`<div class="s-txt">Thèmes prioritaires : ${themes.join(", ")}.</div>`:""}</div>`;
+  const list=(k,arr,skip)=>{const v=(A[k]||[]).filter(i=>i!==skip).map(i=>arr[i-1]);return v.length?v.join(", "):null};
+  const mt=A.Q07_montant?` (${esc(A.Q07_montant)} €)`:"";
+  const prefCard=`<div class="s-card"><h3>Projet de placement</h3><dl>
+    <dt>Origine des fonds</dt><dd>${list("Q09",ORIG)||"—"}</dd>
+    <dt>Objectifs</dt><dd>${list("Q10",OBJ)||"—"}</dd>
+    <dt>Horizon</dt><dd>${g("Q11",HOR)}</dd>
+    <dt>Disponibilité</dt><dd>${g("Q12",DISP)}</dd>
+    <dt>Part de la trésorerie</dt><dd>${g("Q07",["Moins de 25 %","25 à 50 %","50 à 75 %","Plus de 75 %"])}${mt}</dd>
+    <dt>Contraintes</dt><dd>${list("Q13",["Provision des moins-values latentes","Validation des associés / du conseil","Statuts ou covenants"],4)||"Aucune"}</dd>
+    <dt>Exclusions</dt><dd>${list("Q14",EXCL,5)||"Aucune"}</dd>
+    <dt>Vision des marchés</dt><dd>${g("Q27B",["Pessimiste","Neutre","Optimiste"])}</dd></dl></div>`;
+  const alerts=r.al.length?`<div class="s-al"><h4>Points de vigilance pour le conseiller</h4><ul style="margin:0;padding-left:4mm">${r.al.map(a=>`<li>${esc(a)}</li>`).join("")}</ul></div>`:`<div class="s-al s-ok"><h4>Aucun point de vigilance</h4>Les réponses sont cohérentes entre elles.</div>`;
+  const today=new Date().toLocaleDateString("fr-FR");
+  return `<style>${SYN_CSS}</style><section class="syn">
+  <div class="s-hd"><div><div class="s-brand">L&amp;E <span>Conseil Finance Patrimoine</span></div><h1>Synthèse du profil investisseur · Société</h1></div>
+  <div class="meta"><b>${esc(ID.rs||"Société")}</b>${ID.forme?" · "+esc(ID.forme):""}<br>${A.Q01?NATURE[+A.Q01-1]+"<br>":""}Représentée par ${esc(ID.prenom)} ${esc(ID.nom)}${ID.fonction?", "+esc(ID.fonction):""}<br>Questionnaire du ${esc(opts.date||today)}<br>${opts.revised?`<b style="color:#a88918">Mis à jour le ${today}</b><br>`:""}Conseiller : ${esc(conseiller||"—")}</div></div>
+  <div class="s-hero"><div><div class="s-k">Profil de risque retenu</div><div class="s-p">${r.fin!=null?LV[r.fin]:"Incomplet"}</div></div>
+  <div class="s-d">Le profil retenu est le plus prudent entre la tolérance au risque, la capacité de la société à subir des pertes, l'horizon de placement et la perte en capital acceptée.</div>
+  <div class="s-sri">SRI<b>${r.fin!=null?SRI[r.fin]:"—"}</b></div></div>
+  <div class="s-grid">${knCard}${rkCard}${capCard}${esgCard}${prefCard}<div>${alerts}</div></div>
+  ${opts.comment?`<div class="s-com"><h4>Commentaire du conseiller${opts.revised?" – profil ajusté le "+today:""}</h4>${esc(opts.comment).replace(/\n/g,"<br>")}</div>`:""}
+  <div class="s-note">${opts.revised?"Profil recalculé après échange avec le conseiller, à partir des réponses ajustées du questionnaire.":"Pré-profil établi à partir des déclarations du représentant de la société. Il sera validé lors d'un entretien avec le conseiller, au vu des derniers comptes."}</div>
+  <div class="s-ft"><span>L&amp;E Conseil Finance Patrimoine · R.C.S. Orléans 892 822 388 · ORIAS 21001105 · www.le-conseilpatrimoine.fr</span><span>Synthèse · personne morale</span></div>
+  </section>`;
+}
+return{LV,SRI,PRODS,QUIZ,NATURE,SEUILS,ORIG,OBJ,HOR,DISP,CONTR,EXCL,PAI,LOSS,PTS,MULTI,shareCheck,analyse,readForm,fillForm,synthHTML};
+})();
+
+</script>
+<script>
 const CODE_HASH_CONSEIL="aced811614308748be0007fac20c0d7d003f19c2f0ac2ce78d9ab80ff6ab20bb"; // code actuel : CONSEIL2026
 const NB_PAGES_QUESTIONNAIRE=8;
 const $=s=>document.querySelector(s);
@@ -388,20 +535,21 @@ function render(){
     ${err?`<div class="err">${esc(err)}</div>`:""}<div style="margin-top:14px"><button class="btn primary" id="gatebtn" type="button">Entrer</button></div></div>`;
     setTimeout(()=>{const i=$("#code_in");i&&i.focus()},0);return}
   if(view==="drop"){app.innerHTML=`<h2 style="margin-top:18px">Recalculer un profil</h2>
-    <ol class="steps"><li>Ouvrez le PDF reçu par e-mail dans Adobe Reader, Edge ou Chrome et modifiez les réponses avec le client.</li><li>Enregistrez le PDF.</li><li>Déposez-le ci-dessous : le profil est recalculé et la page de synthèse est refaite.</li></ol>
+    <ol class="steps"><li>Ouvrez le PDF reçu par e-mail (particulier ou société) dans Adobe Reader, Edge ou Chrome et modifiez les réponses avec le client.</li><li>Enregistrez le PDF.</li><li>Déposez-le ci-dessous : le profil est recalculé et la page de synthèse est refaite.</li></ol>
     <div class="drop" id="drop"><b>Déposez ici le PDF du questionnaire</b><p class="muted">Le fichier est traité dans votre navigateur : rien n'est envoyé ni conservé.</p>
     <label class="btn primary" for="file">Choisir le PDF</label><input type="file" id="file" accept="application/pdf" hidden></div>
     ${err?`<div class="status err">${esc(err)}</div>`:""}`;bindDrop();return}
-  if(view==="result"){const r=analyse(cur.A),old=cur.meta.profil;
+  if(view==="result"){const r=(cur.pm?PMX.analyse:analyse)(cur.A),old=cur.meta.profil;
     app.innerHTML=`<div class="status ok">« ${esc(cur.name)} » analysé.</div>
-    <div class="cmp"><b>${esc(cur.ID.prenom)} ${esc(cur.ID.nom)}</b>${old!=null&&old!==r.fin?`<span class="pill" style="--c:${LVC[old]}">${LV[old]}</span> → `:""}${r.fin!=null?`<span class="pill" style="--c:${LVC[r.fin]}">${LV[r.fin]}</span>`:"<span class='muted'>profil incomplet</span>"}
+    <div class="cmp"><b>${cur.pm?`${esc(cur.ID.rs||"Société")}</b> <span class="muted">(société · ${esc(cur.ID.prenom)} ${esc(cur.ID.nom)})</span>`:`${esc(cur.ID.prenom)} ${esc(cur.ID.nom)}</b>`}${old!=null&&old!==r.fin?`<span class="pill" style="--c:${LVC[old]}">${LV[old]}</span> → `:""}${r.fin!=null?`<span class="pill" style="--c:${LVC[r.fin]}">${LV[r.fin]}</span>`:"<span class='muted'>profil incomplet</span>"}
       ${old!=null&&old===r.fin?`<span class="muted">(profil inchangé)</span>`:""}</div>
     <label class="kick" for="com" style="display:block;margin-top:14px">Commentaire du conseiller (facultatif, imprimé sur la synthèse)</label>
     <textarea class="com" id="com" placeholder="Ex. : après échange du 12/11, le client accepte une part d'unités de compte plus importante ; horizon porté à 8 ans.">${esc(cur.comment||"")}</textarea>
     <div class="nav"><button class="btn" id="other" type="button">Traiter un autre PDF</button><button class="btn gold" id="dl" type="button">Télécharger le PDF mis à jour</button></div>
     ${err?`<div class="status err">${esc(err)}</div>`:""}
-    <div class="preview"><div class="scale"><div>${synthHTML(cur.A,cur.ID,cur.meta.conseiller,{revised:true,comment:cur.comment,date:cur.meta.date})}</div></div></div>`;return}
+    <div class="preview"><div class="scale"><div>${syn()}</div></div></div>`;return}
 }
+function syn(){return (cur.pm?PMX.synthHTML:synthHTML)(cur.A,cur.ID,cur.meta.conseiller,{revised:true,comment:cur.comment,date:cur.meta.date})}
 function bindDrop(){const d=$("#drop");if(!d)return;
   $("#file").addEventListener("change",e=>{if(e.target.files[0])load(e.target.files[0])});
   ["dragenter","dragover"].forEach(t=>d.addEventListener(t,e=>{e.preventDefault();d.classList.add("over")}));
@@ -411,7 +559,9 @@ function bindDrop(){const d=$("#drop");if(!d)return;
 async function load(file){
   err="";try{
     const buf=await file.arrayBuffer(),L=PDFLib,doc=await L.PDFDocument.load(buf,{ignoreEncryption:true}),form=doc.getForm();
-    const A={},ID={prenom:"",nom:"",email:"",tel:"",naissance:""};let n=0;
+    const isPM=form.getFields().some(f=>f.getName()==="RS");
+    let A={},ID={prenom:"",nom:"",email:"",tel:"",naissance:""};let n=0;
+    if(isPM)({A,ID}=PMX.readForm(form,L));else
     for(const f of form.getFields()){const k=f.getName();
       if(f instanceof L.PDFRadioGroup){const v=f.getSelected();if(v){A[k]=String(v);n++}}
       else if(f instanceof L.PDFCheckBox){if(!f.isChecked())continue;n++;
@@ -421,8 +571,8 @@ async function load(file){
         if(k==="Q09"||k==="Q10")A[k]=v;else if(k==="Q14_M")A.Q14_montant=v;else if(k==="NOM")ID.nom=v;else if(k==="PRENOM")ID.prenom=v;else if(k==="NAISSANCE")ID.naissance=v;else if(k==="EMAIL")ID.email=v}}
     if(!form.getFields().some(f=>/^Q\d\d/.test(f.getName()))){err="Ce PDF ne contient pas les champs du questionnaire L&E (PDF aplati ou autre document).";render();return}
     let meta={};const sub=doc.getSubject()||"";if(sub.startsWith("LE-PROFIL:")){try{meta=JSON.parse(decodeURIComponent(escape(atob(sub.slice(10)))))}catch(_){}}
-    if(!ID.prenom&&meta.prenom)ID.prenom=meta.prenom;if(!ID.nom&&meta.nom)ID.nom=meta.nom;
-    cur={buf,name:file.name,A,ID,meta,comment:meta.comment||""};view="result";render();
+    if(!ID.prenom&&meta.prenom)ID.prenom=meta.prenom;if(!ID.nom&&meta.nom)ID.nom=meta.nom;if(isPM&&!ID.rs&&meta.rs)ID.rs=meta.rs;
+    cur={buf,name:file.name,A,ID,meta,pm:isPM,comment:meta.comment||""};view="result";render();
   }catch(e){err="Lecture impossible : vérifiez que le PDF n'est pas protégé, puis réessayez.";render()}
 }
 async function download(){
@@ -431,14 +581,14 @@ async function download(){
     while(doc.getPageCount()>NB_PAGES_QUESTIONNAIRE)doc.removePage(doc.getPageCount()-1);
     const helv=await doc.embedFont(L.StandardFonts.Helvetica);form.updateFieldAppearances(helv);
     const box=document.createElement("div");box.style.cssText="position:fixed;left:-10000px;top:0;width:210mm;background:#fff";
-    box.innerHTML=synthHTML(cur.A,cur.ID,cur.meta.conseiller,{revised:true,comment:cur.comment,date:cur.meta.date});document.body.appendChild(box);
+    box.innerHTML=syn();document.body.appendChild(box);
     try{await document.fonts.ready;const cv=await html2canvas(box.querySelector(".syn"),{scale:2,backgroundColor:"#ffffff",logging:false});
       const jpg=await doc.embedJpg(cv.toDataURL("image/jpeg",.88));doc.addPage([595.28,841.89]).drawImage(jpg,{x:0,y:0,width:595.28,height:841.89})}finally{box.remove()}
-    const meta={...cur.meta,prenom:cur.ID.prenom,nom:cur.ID.nom,profil:analyse(cur.A).fin,comment:cur.comment,revisedAt:new Date().toLocaleDateString("fr-FR")};
+    const meta={...cur.meta,prenom:cur.ID.prenom,nom:cur.ID.nom,profil:(cur.pm?PMX.analyse:analyse)(cur.A).fin,comment:cur.comment,revisedAt:new Date().toLocaleDateString("fr-FR")};
     doc.setSubject("LE-PROFIL:"+btoa(unescape(encodeURIComponent(JSON.stringify(meta)))));doc.setModificationDate(new Date());
     const blob=new Blob([await doc.save()],{type:"application/pdf"}),url=URL.createObjectURL(blob),a=document.createElement("a");
     const d=new Date().toISOString().slice(0,10);
-    a.href=url;a.download=`Profil_investisseur_${(cur.ID.nom||"client").replace(/[^\w-]+/g,"_")}_${(cur.ID.prenom||"").replace(/[^\w-]+/g,"_")}_maj_${d}.pdf`;
+    a.href=url;a.download=cur.pm?`Profil_investisseur_societe_${(cur.ID.rs||"societe").replace(/[^\w-]+/g,"_")}_maj_${d}.pdf`:`Profil_investisseur_${(cur.ID.nom||"client").replace(/[^\w-]+/g,"_")}_${(cur.ID.prenom||"").replace(/[^\w-]+/g,"_")}_maj_${d}.pdf`;
     document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),5000);
     btn.textContent="PDF téléchargé ✓";setTimeout(()=>{btn.disabled=false;btn.textContent="Télécharger le PDF mis à jour"},2500);
   }catch(e){err="La génération du PDF a échoué. Réessayez ou rechargez la page.";render()}
@@ -446,7 +596,7 @@ async function download(){
 document.addEventListener("click",async e=>{const t=e.target.closest("button");if(!t)return;
   if(t.id==="gatebtn")checkCode();else if(t.id==="dl")download();else if(t.id==="other"){cur=null;view="drop";err="";render()}});
 document.addEventListener("keydown",e=>{if(e.key==="Enter"&&e.target.id==="code_in")checkCode()});
-let tmr=null;document.addEventListener("input",e=>{if(e.target.id==="com"){cur.comment=e.target.value;clearTimeout(tmr);tmr=setTimeout(()=>{const pv=$(".preview .scale>div");if(pv)pv.innerHTML=synthHTML(cur.A,cur.ID,cur.meta.conseiller,{revised:true,comment:cur.comment,date:cur.meta.date})},400)}});
+let tmr=null;document.addEventListener("input",e=>{if(e.target.id==="com"){cur.comment=e.target.value;clearTimeout(tmr);tmr=setTimeout(()=>{const pv=$(".preview .scale>div");if(pv)pv.innerHTML=syn()},400)}});
 let tries=0;async function checkCode(){const v=($("#code_in").value||"").trim().toUpperCase();if(!v)return;
   if(++tries>8){err="Trop d'essais. Rechargez la page.";render();return}
   if((await sha256(v))===CODE_HASH_CONSEIL){err="";view="drop"}else err="Code incorrect.";render()}
